@@ -1,0 +1,197 @@
+<div class="c-flex-row-center c-full-container">
+	<div class="left">
+		<div class="switchTop">
+			<nz-tabset (nzSelectChange)="switchType($event)">
+				<nz-tab nzTitle="按类型">
+					<div class='classifyItem' [ngClass]="{'itemActive': selectItem === 'all'}" (click)="switchItem('all')">
+						全部
+					</div>
+					<div class='classifyItem'
+						 *ngFor="let item of ENUM_Type ; let idx = index"
+						 [ngClass]="{'itemActive': selectItem === item.value}"
+						 (click)="switchItem(item.value)"
+					>
+						{{ item.key }}
+					</div>
+				</nz-tab>
+				<nz-tab nzTitle="按区域">
+					<div class='classifyItem' [ngClass]="{'itemActive': selectItem === 'all'}" (click)="switchItem('all')">
+						全部
+					</div>
+					<div class='classifyItem'
+						 *ngFor="let item of ENUM_Area ; let idx = index"
+						 [ngClass]="{'itemActive': selectItem === item.value}"
+						 (click)="switchItem(item.value)"
+					>
+						{{ item.key }}
+					</div>
+				</nz-tab>
+			</nz-tabset>
+		</div>
+	</div>
+	<div class="middle">
+		<div class="middleHeader clearFix c-flex-row-end">
+			<one-key-reset (notify)="getList()"></one-key-reset>
+			<common-count [count]="rawData.count"></common-count>
+		</div>
+		<div class="middleContainer scrollWrap">
+			<div class="list-wrapper" *ngFor="let item of dataList">
+				<div class="list-title c-flex-row-space">
+					<span *ngIf="selectType === 'type'">
+						{{ item.data[0].typeInfo.name }}
+					</span>
+					<span *ngIf="selectType === 'area'">
+						{{ item.data[0].areaInfo.name }}
+					</span>
+					<common-count [count]="item.count"></common-count>
+				</div>
+
+				<div class="c-flex-row-start c-flex-auto-wrap">
+					<div *ngFor="let subItem of item.data" style="width: 20%">
+						<common-room
+								[roomInfo]="subItem"
+								[timeStamp]="serveTimeStamp"
+								(click)="roomSelect( subItem )"
+								[ngClass]="{'roomSelect':selectRoomId === subItem.id }"
+						></common-room>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="right">
+		<room-order [roomInfo]="selectRoomItem " ></room-order>
+	</div>
+</div>
+<nz-modal
+		[(nzVisible)]="modalShow"
+		[nzTitle]="modalTitle"
+		[nzContent]="modalContent"
+		[nzFooter]="modalFooter"
+		(nzOnCancel)="modalShow = false;keyEventEnabled = true"
+		[nzWidth]="800"
+		*ngIf="selectRoomItem"
+>
+	<ng-template #modalTitle>
+		<div class="c-text-center">
+			<span>
+				{{ selectRoomItem.name }}
+			</span>
+			-
+			<span>
+				{{ selectRoomItem.areaInfo.name }}
+			</span>
+			-
+			<span>
+				{{ selectRoomItem.status | statusPipe }}
+			</span>
+		</div>
+	</ng-template>
+
+	<ng-template #modalContent>
+		<reserve></reserve>
+		<div style="padding: 24px;" *ngIf="selectRoomItem.status === 0">
+			<nz-tabset [(nzSelectedIndex)] = 'selectTabIndex'>
+				<nz-tab nzTitle="计时">
+					<div *ngIf="roomTime.time.length === 0 " class="c-text-center weekPink-font">
+						暂未设置价格
+					</div>
+					<div *ngFor="let item of roomTime.time ;let idx = index " class="light-font c-flex-row-start section-wrapper">
+						<div class='badge-custom badge' *ngIf="idx === 0">
+							当前
+						</div>
+						<div class = 'section-item' style="width: 120px;">名称 : <span class="weekPink-font"> {{ item.name }} </span></div>
+						<div class="section-item" style="width: 120px;">
+							时段 :
+							<span class="weekPink-font">
+								{{ item.startTime | timePie:2:':' }}
+							</span>
+							-
+							<span class="weekPink-font">
+								{{ item.endTime | timePie:2:':'  }}
+							</span>
+						</div>
+						<div class="c-flex-row-start section-item">
+							<div style="width: 120px;">
+								价格 :
+								<span class="weekPink-font">
+									{{ item.price.timePrice | cusCurrency }} / 小时
+								</span>
+							</div>
+							<div style="margin-left: 10px;">
+								会员价 :
+								<span class="weekPink-font">
+									{{ item.price.vipTimePrice | cusCurrency }} / 小时
+								</span>
+							</div>
+						</div>
+					</div>
+				</nz-tab>
+				<nz-tab nzTitle="买断">
+					<div *ngIf="roomTime.outright.length === 0 " class="c-text-center weekPink-font">
+						暂未设置价格
+					</div>
+					<div *ngIf="roomTime.outright.length > 0">
+						<cash-outright #outrightComponent [outrightArr]="roomTime.outright" [typeId]="selectRoomItem.typeId"></cash-outright>
+					</div>
+				</nz-tab>
+				<nz-tab nzTitle="预买">
+					<div *ngIf="roomTime.advance.length === 0 " class="c-text-center weekPink-font">
+						暂未设置价格
+					</div>
+					<div *ngIf="roomTime.outright.length > 0">
+						<cash-advance #advanceComponent [typeId]="selectRoomItem.typeId"></cash-advance>
+					</div>
+				</nz-tab>
+			</nz-tabset>
+		</div>
+	</ng-template>
+
+	<ng-template #modalFooter>
+<!--		<button class ='status_1' nz-button nzType="primary" (click)="refresh()">刷新</button>-->
+		<button *ngIf = "selectRoomItem.status === 0 && selectTabIndex === 0 " class ='status_1' nz-button nzType="primary" (click)="open($event)">开房</button>
+		<button *ngIf = "selectRoomItem.status === 0  && ( selectTabIndex === 1 || selectTabIndex === 2 )" class ='status_1' nz-button nzType="primary" (click)="checkout($event)">结账</button>
+		<button *ngIf = "selectRoomItem.status === 6" class ='status_1' nz-button nzType="primary" (click)="checkoutByTime($event)">结账</button>
+		<button class="status_2" nz-button *ngIf="selectRoomItem.status === 3" (click)="reset($event)">置空</button>
+		<button class="status_2" nz-button *ngIf="selectRoomItem.status === 7 || selectRoomItem.status === 8 " (click)="clean($event)">置清理</button>
+		<button nz-button (click)="modalShow = false;keyEventEnabled = true">关闭</button>
+	</ng-template>
+</nz-modal>
+
+
+<nz-modal
+		[(nzVisible)]="checkoutShow"
+		[nzTitle]="checkoutModalTitle"
+		[nzContent]="checkoutModalContent"
+		[nzFooter]="checkoutModalFotter"
+		(nzOnCancel)="checkoutShow = false;keyEventEnabled = true"
+		[nzWidth]="900"
+		*ngIf="selectRoomItem"
+>
+	<ng-template #checkoutModalTitle>
+		<div class="c-text-center">
+			<span>
+				{{ selectRoomItem.name }}
+			</span>
+			-
+			<span>
+				{{ selectRoomItem.areaInfo.name }}
+			</span>
+			-
+			<span>
+				{{ selectRoomItem.status | statusPipe }}
+			</span>
+		</div>
+	</ng-template>
+
+	<ng-template #checkoutModalContent>
+		<checkout-room #checkoutRoomComponent></checkout-room>
+	</ng-template>
+
+	<ng-template #checkoutModalFotter>
+		<button nz-button nzType="primary" class="status_1" *ngIf="selectRoomItem.status === 0 && selectTabIndex === 1 " (click)="openByOutright($event)">结账</button>
+		<button nz-button nzType="primary" class="status_1" *ngIf="selectRoomItem.status === 0 && selectTabIndex === 2 " (click)="openByAdvance($event)">结账</button>
+		<button nz-button nzType="primary" class="status_1" *ngIf="selectRoomItem.status === 6" (click)="checkOutWithTime($event)">结账</button>
+		<button nz-button nzType="primary" (click)="checkoutShow = false;keyEventEnabled = true">关闭</button>
+	</ng-template>
+</nz-modal>

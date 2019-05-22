@@ -1,0 +1,41 @@
+<div class="c-full-container c-bg-container">
+	<div class="content">
+		<div class="section">
+			<div class="title">
+				选择系统
+			</div>
+			<div style="margin-top: 20px;" class="c-flex-row-start">
+				<div
+					class="choseBlock"
+					*ngFor="let item of ENUM_Sys ; let idx = index "
+					[ngClass]=" {'choseBlock_active' : idx === selectSys }"
+					(click)="select(idx , 'selectSys')"
+				>
+					{{ item.key }}
+				</div>
+			</div>
+		</div>
+		<div class="section">
+			<div class="title">
+				选择店铺
+			</div>
+
+			<div style="margin-top: 20px;" class="c-flex-row-start">
+				<div
+					class="choseBlock"
+					*ngFor="let item of ENUM_Shop ; let idx = index "
+					[ngClass]=" {'choseBlock_active' : idx === selectShop }"
+					(click)="select(idx , 'selectShop')"
+				>
+					{{ item.key }}
+				</div>
+			</div>
+		</div>
+
+		<div class="c-flex-row-center">
+			<button nz-button nzType="primary" style="width: 300px;" (click)="fire()">
+				进入
+			</button>
+		</div>
+	</div>
+</div>

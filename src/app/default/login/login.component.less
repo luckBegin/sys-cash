@@ -1,0 +1,123 @@
+@import "../../../variable.less";
+.login-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: url(@bgUrl) round;
+}
+
+.login-container::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  filter: blur(10px);
+  background: inherit;
+}
+
+.login-wrapper {
+  width: 700px;
+  height: 500px;
+  //background: rgba(28, 28, 28, .4);
+  border-radius: 5px;
+  position: relative;
+  z-index: 3;
+}
+
+.login-left,
+.login-right {
+  width: 300px;
+  height: 100%;
+  -webkit-box-shadow: 9px 9px 20px #333333;
+  box-shadow: 9px 9px 20px #333333;
+  position: relative;
+}
+
+.login-left {
+  margin-right: 100px;
+  background-image: url(@bgUrl);
+  background-position: 0 0;
+}
+
+.login-right {
+  background-image: url(@bgUrl);
+  background-position: 300px;
+}
+
+.qrWrapper {
+  width: 220px;
+  height: 220px;
+  background: rgba(0, 0, 0, 0.56);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.qrTitle {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.userNameWrapper {
+  width: 100%;
+  height: 100%;
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 40%;
+}
+
+.inputWrapper {
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  padding: 20px 30px;
+}
+
+.inputWrapper::after {
+  content: '';
+  display: block;
+  width: calc(100% - 40px);
+  height: 1px;
+  background: #686d7c;
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+}
+
+.inputIcon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  margin-right: 20px;
+  position: absolute;
+  left: 23px;
+  top: 20px;
+  z-index: 99;
+}
+
+.input {
+  flex: 1;
+  text-indent: 20px;
+  background: none;
+  border: none;
+  vertical-align: baseline;
+  outline: none
+}
+
+.btnLogin {
+  width: calc(100% - 40px);
+  margin: 15px 20px 0 20px;
+}
+
+.logo {
+  display: block;
+  width: 45%;
+  margin: 0 auto;
+  margin-bottom: 15%;
+}

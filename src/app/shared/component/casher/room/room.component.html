@@ -1,0 +1,45 @@
+<div class = 'c-flex-row-allStart'>
+	<div class="left">
+		<div class="money">
+			<div class="money-section c-flex-row-space">
+				<span>
+					应付金额:
+				</span>
+				<span class="weekPink-font">
+					{{ money.allMoney | cusCurrency }}
+				</span>
+			</div>
+			<div class="money-section c-flex-row-space">
+				<span>
+					实际应付:
+				</span>
+				<span class="weekPink-font">
+					{{ money.shouldMoney | cusCurrency }}
+				</span>
+			</div>
+			<div class="money-section c-flex-row-space">
+				<span>
+					优惠金额:
+				</span>
+				<span class="weekPink-font">
+					{{ money.shouldMoney | cusCurrency }}
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="right">
+		<div class="paymentMethodWrapper" *ngIf="methods.length > 0">
+			<payment-method [methods]="methods" [money]="money.shouldMoney" #paymentMethodComponent></payment-method>
+			<div>
+				<div class="c-flex-row-space wrap">
+					<span class="title">
+						备注
+					</span>
+				</div>
+				<div>
+					<input class = 'textarea' placeholder="请输入备注" [(ngModel)]="remark">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

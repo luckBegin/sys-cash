@@ -1,0 +1,71 @@
+<div class="light-font c-flex-row-start section-wrapper">
+	<div style="margin-right: 10px">
+		开始时间 :
+	</div>
+	<div class="weekPink-font">
+		{{ currentDate.date }}
+	</div>
+</div>
+
+<div class="light-font c-flex-row-start section-wrapper">
+	<div style="margin-right: 10px">
+		预买时间 :
+	</div>
+	<div class="">
+		<input
+				type="text" class="section-input weekPink-font"
+				[(ngModel)]="inputTime.h"
+				(keydown)="inputKeyDown($event , 'h')"
+				(ngModelChange)="valueChange('h')"
+		>
+		时
+		<input
+				type="text" class="section-input weekPink-font"
+				[(ngModel)]="inputTime.m"
+				(keydown)="inputKeyDown($event , 'm')"
+				(ngModelChange)="valueChange('m')"
+		>
+		分
+	</div>
+</div>
+
+<div class="light-font c-flex-row-start section-wrapper">
+	<div style="margin-right: 10px">
+		结束时间 :
+	</div>
+	<div class="">
+		<nz-date-picker
+				nzShowTime
+				nzFormat="yyyy-MM-dd HH:mm"
+				nzPlaceHolder="选择结束时间"
+				nzAllowClear = 'false'
+				[(ngModel)] = 'endTime'
+				(keydown)="inputKeyDown($event , 'date')"
+				(ngModelChange)="valueChange('date')"
+		></nz-date-picker>
+	</div>
+</div>
+
+<div class="light-font priceWrapper">
+
+	<div *ngIf="timePrice.length > 0 " class="light-font">
+		<time-price-detail [timePrice]="timePrice"></time-price-detail>
+	</div>
+
+	<div class="light-font" >
+		<div class="c-flex-row-start"  style="margin-top: 20px">
+			<div>
+				应付金额:
+				<span class="weekPink-font">
+				{{ money.shouldPay | cusCurrency}}
+			</span>
+			</div>
+			<div style="margin-left: 30px;">
+				会员应付:
+				<span class="weekPink-font">
+				{{ money.vipShouldPay | cusCurrency }}
+			</span>
+			</div>
+		</div>
+	</div>
+</div>

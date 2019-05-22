@@ -1,0 +1,68 @@
+<div class="detail-wrapper" *ngIf="timePrice.length > 0">
+	计时明细:
+	<div>
+		<div class="c-flex-row-start section-wrapper time-detail" *ngFor="let item of timePrice ; let i = index">
+			<div style="margin-right: 10px;width: 20px;height: 20px;" class="badge-custom">
+				{{ i + 1 }}
+			</div>
+			<div class="c-flex-column-start" style="margin-left: 10px;">
+				<div class="c-flex-row-start" style="margin-top: 10px">
+					<div style="margin-right: 10px;width: 100px">
+						<span>时段:</span>
+						<span class="weekPink-font"> {{ item.name }}</span>
+					</div>
+					<div style="width: 140px;">
+						时段 :
+						<span class="weekPink-font">
+								{{ item.startTime | timePie:2:':' }}
+							</span>
+						-
+						<span class='weekPink-font'>
+								{{ item.endTime | timePie:2:':' }}
+							</span>
+					</div>
+
+					<div style="margin-left: 20px">
+						共计 :
+						<span class="weekPink-font">
+								{{ item.timeDetail.d * 60 + item.timeDetail.h }}
+							</span>
+						小时
+						<span class="weekPink-font">
+								{{ item.timeDetail.m }}
+							</span>
+						分钟
+					</div>
+				</div>
+				<div class="c-flex-row-start">
+					<div style="width: 100px">
+						总价 :
+						<span class="weekPink-font">
+								{{ item.timePrice | cusCurrency }}
+							</span>
+					</div>
+					<div style="margin-left: 10px;width: 130px">
+						会员总价 :
+						<span class="weekPink-font">
+								{{ item.vipTimePrice | cusCurrency }}
+							</span>
+					</div>
+
+					<div style="margin-left: 30px;width: 150px">
+						单价:
+						<span class="weekPink-font">
+								{{ item.pricePerHour | cusCurrency }} / 小时
+							</span>
+					</div>
+
+					<div style="margin-left: 10px;width: 150px">
+						会员单价:
+						<span class="weekPink-font">
+								{{ item.vipPricePerHour | cusCurrency }} / 小时
+							</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

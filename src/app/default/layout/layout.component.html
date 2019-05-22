@@ -1,0 +1,36 @@
+<div class="c-bg-container c-full-container">
+	<div class="c-full-container c-flex-column-center contentContainer">
+		<div class="header c-flex-row-start">
+			<div class="c-flex-row-start" style="width: 200px;height: 100%;">
+				<img [src]="src" class="logo">
+				<div class="c-flex-row-center title">
+					{{ title }}
+				</div>
+			</div>
+
+			<div style="flex : 1" class="c-flex-row-end">
+				<nz-dropdown nzPlacement="bottomRight">
+					<div class="alain-default__nav-item d-flex align-items-center px-sm" nz-dropdown>
+						<nz-avatar
+								[nzSrc]="'http://localhost:3002/gallery/list/get/MjAxOS0wMy0xOC8zLzIvMTU1Mjg5ODY2MDQzNDMyLmpwZw==?s=200,200'"
+								nzSize="default" class="mr-sm"></nz-avatar>
+						<span style="color: #fff;margin-left:5px">
+							213123
+						</span>
+					</div>
+					<div nz-menu class="width-sm">
+						<div nz-menu-item (click)="changePassWord()"><i nz-icon type="user" class="mr-sm"></i>
+							修改密码
+						</div>
+						<div nz-menu-item (click)="logout()"><i nz-icon type="logout" class="mr-sm"></i>
+							退出登录
+						</div>
+					</div>
+				</nz-dropdown>
+			</div>
+		</div>
+		<div class="router-container">
+			<router-outlet></router-outlet>
+		</div>
+	</div>
+</div>

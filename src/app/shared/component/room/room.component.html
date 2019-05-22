@@ -1,0 +1,71 @@
+<div class="list-item-wrapper light-bg">
+	<div class="item-title c-flex-row-space">
+		<span>
+			{{ roomInfo.name }}
+		</span>
+		<div class="c-flex-row-end">
+			<span class = 'badge-custom'>
+				{{ roomInfo.typeInfo.name }}
+			</span>
+			<span  class = 'badge-custom'>
+				{{ roomInfo.areaInfo.name }}
+			</span>
+			<span  class = 'badge-custom' *ngIf=" roomInfo.status  === 6">
+				计时
+			</span>
+			<span  class = 'badge-custom' *ngIf=" roomInfo.status  === 7">
+				预买
+			</span>
+			<span  class = 'badge-custom' *ngIf=" roomInfo.status  === 8">
+				买断
+			</span>
+
+		</div>
+	</div>
+	<div class="detail-box">
+		<div *ngIf="roomInfo.status === 0" class="gray-font content-box">
+			房间备注: {{ roomInfo.remark ? roomInfo.remark : "无" }}
+		</div>
+
+		<!--计时-->
+		<div *ngIf="roomInfo.status === 6" class="content-box status_6">
+			<div>
+				开房时间: {{ ( roomInfo.orderInfo.joinTime ? roomInfo.orderInfo.joinTime : "无" ) | datePie }}
+			</div>
+		</div>
+
+		<!--买断-->
+		<div *ngIf="roomInfo.status === 8 || roomInfo.status === 7 " class="content-box" [ngClass]="{ status_8: roomInfo.status === 8 , status_7: roomInfo.status === 7 }">
+			<div>
+				<div style="margin-bottom: 5px">
+					房费: {{ ( roomInfo.orderInfo ? roomInfo.orderInfo.shouldMoney : "无" ) | cusCurrency }}
+				</div>
+				<div style="margin-bottom: 5px">
+					开房时间: {{ ( roomInfo.orderInfo.joinTime ? roomInfo.orderInfo.joinTime : "无" ) | datePie }}
+				</div>
+				<div style="margin-bottom: 5px">
+					到期时间: {{ ( roomInfo.orderInfo.leaveTime ? roomInfo.orderInfo.leaveTime : "无" ) | datePie }}
+				</div>
+				<div>
+					备注: {{ roomInfo.orderInfo ? roomInfo.orderInfo.remark : "无" }}
+				</div>
+			</div>
+			<div *ngIf="showNotify( roomInfo.orderInfo.joinTime , roomInfo.orderInfo.leaveTime )" class="notify-wrapper c-flex-row-center">
+				<div>
+					123123123
+				</div>
+			</div>
+		</div>
+
+
+		<!--故障-->
+		<div *ngIf="roomInfo.status === 4" class="content-box status_4">
+			故障原因: {{ roomInfo.reason ? roomInfo.reason : "无" }}
+		</div>
+
+		<!--故障-->
+		<div *ngIf="roomInfo.status === 3" class="content-box status_3">
+			房间备注: {{ roomInfo.remark ? roomInfo.remark : "无" }}
+		</div>
+	</div>
+</div>

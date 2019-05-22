@@ -1,0 +1,30 @@
+<div class="c-full-container login-container c-flex-row-center">
+	<div class="login-wrapper c-flex-row-start">
+		<div class="login-left c-flex-row-center">
+			<div class="qrWrapper c-flex-row-center">
+				<qrcode [qrdata]="qrStr" [size]="210" [level]="'M'"></qrcode>
+			</div>
+		</div>
+		<div class="login-right">
+			<div class="userNameWrapper">
+				<img src="/assets/img/logo.png" alt="" class='logo'>
+				<form nz-form [nzLayout]="'inline'" [formGroup]="form">
+					<div class="inputWrapper c-flex-row-start">
+						<img src="/assets/img/username.png" class="inputIcon">
+						<input type="text" class="input" formControlName="username" id="username"
+							   placeholder="请输入账号">
+					</div>
+
+					<div class="inputWrapper c-flex-row-start">
+						<img src="/assets/img/password.png" class="inputIcon">
+						<input type="password" class="input" formControlName="password" id="password"
+							   placeholder="请输入密码">
+					</div>
+				</form>
+				<button [disabled]="!form.valid" (click)="login($event)" nz-button nzType="primary" class="btnLogin">
+					登录
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

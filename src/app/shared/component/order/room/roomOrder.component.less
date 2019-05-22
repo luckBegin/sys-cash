@@ -1,0 +1,87 @@
+.container{
+	width: 100%;
+	height: 250px;
+	background: rgba(62, 62, 62, 0.25);
+	border-bottom: 1px solid #525252;
+	overflow-y: hidden;
+}
+.scrollContainer{
+	width: 100%;
+	height: calc(100% - 30px);
+	overflow-y: scroll;
+}
+.title{
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	color: #fff;
+	background: #33363d;
+	font-size: 14px;
+}
+.orderWrapper{
+	color: #fff;
+	box-sizing: border-box;
+	padding: 7px 10px;
+	background: #42636905;
+	border-bottom: 1px solid #464646;
+	cursor: pointer;
+	transition: all 0.2s ease-in;
+	font-size: 12px;
+}
+.orderWrapper:hover ,
+.orderActive{
+	background: #3d6536 ;
+}
+.flexContainer{
+	width: 100% ;
+	height: 100% ;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+.reset{
+	width: 100% ;
+	flex: 1;
+	background: rgba(62, 62, 62, 0.25);
+	border-bottom: 1px solid #525252;
+	overflow-y: hidden;
+}
+.reset ::ng-deep .ant-tabs-bar{
+	margin-bottom: 0;
+}
+.reset ::ng-deep .ant-tabs{
+	display: flex;
+	flex-direction: column;
+}
+
+.reset::ng-deep .ant-tabs .ant-tabs-top-content.ant-tabs-content-animated{
+	height: calc(100% - 45px);
+}
+.itemContainer{
+	width: 100% ;
+	height: 100%;
+	overflow-y: scroll;
+}
+
+.itemContainer::-webkit-scrollbar {
+	width: 2px;
+	height: 5px;
+	background-color: #3d6536;
+}
+
+.itemContainer::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	background-color: #3d6536;
+}
+
+.itemContainer::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+	background-color: #3d6536;
+}
+
+::ng-deep .ant-tabs .ant-tabs-top-content>.ant-tabs-tabpane{
+	overflow-y: hidden;
+}

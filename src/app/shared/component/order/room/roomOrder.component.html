@@ -1,0 +1,66 @@
+<div class="flexContainer">
+	<div class="container">
+		<div class="title">
+			房间订单列表
+			<span [@ngIfAnimate]="" *ngIf="roomInfo">
+			- {{ roomInfo.name }}
+		</span>
+		</div>
+		<div class="scrollWrap scrollContainer">
+			<div
+					class="c-flex-row-space orderWrapper"
+					(click)="orderItem( item.id )"
+					*ngFor="let item of orderList"
+					[ngClass]="{ orderActive: selectOrderId === item.id }"
+			>
+				<span>
+					{{ item.createTime | datePie: 'm-d h:i'  }}
+				</span>
+				<div class="c-flex-row-start">
+					<span class ='money'>
+						{{ item.shouldMoney | cusCurrency }}
+					</span>
+					<div class="c-flex-row-start">
+						<span class="badge-custom" *ngFor="let _item of item.paymentOrder">
+							{{ _item.method.name.charAt(0) }}
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="reset">
+		<div class="title">
+			消费详情
+			<span [@ngIfAnimate]="" *ngIf="roomInfo">
+			- {{ roomInfo.name }}
+		</span>
+		</div>
+		<nz-tabset style="height: 100%">
+			<nz-tab nzTitle="房费">
+				<div class="itemContainer">
+					<div class="orderWrapper c-flex-row-space" *ngFor="let item of orderItemList.room">
+						<span>
+							{{ item.type }}
+						</span>
+						<span>
+							<span>
+								{{ item.remark | filterSymbol }}
+							</span>
+						</span>
+						<span>
+							{{ item.shouldMoney | cusCurrency }}
+						</span>
+					</div>
+				</div>
+			</nz-tab>
+			<nz-tab nzTitle="超市">
+				<div class="itemContainer">
+					<div class="">
+					</div>
+				</div>
+			</nz-tab>
+		</nz-tabset>
+	</div>
+</div>
