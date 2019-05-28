@@ -1,9 +1,12 @@
 <div class="c-full-container login-container c-flex-row-center">
 	<div class="login-wrapper c-flex-row-start">
-		<div class="login-left c-flex-row-center">
-			<div class="qrWrapper c-flex-row-center">
-				<qrcode [qrdata]="qrStr" [size]="210" [level]="'M'"></qrcode>
+		<div class="login-left c-flex-column-center">
+			<div class="qrWrapper c-flex-row-center" >
+				<qrcode *ngIf="qrStr" [qrdata]="qrStr" [size]="210" [level]="'M'"></qrcode>
 			</div>
+			<button (click)="getQrCode()" style="width: 220px" nz-button nzType="primary" class="btnLogin">
+				刷新二维码
+			</button>
 		</div>
 		<div class="login-right">
 			<div class="userNameWrapper">

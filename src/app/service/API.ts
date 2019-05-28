@@ -1,5 +1,5 @@
-export const HOST: string = 'http://localhost:3002';
-
+export const HOST: string = 'http://api.jpgqs.cn';
+// export const HOST: string = 'http://localhost:3002';
 const system = {
 	staff: HOST + '/system/staff'
 };
@@ -32,4 +32,7 @@ const basic = {
 	payment: HOST + '/basic/payment/byConditions'
 };
 
-export const API = { system  , room , calc , utils , basic};
+const weChat = {
+	qrCode: HOST + '/wechat/qrCode'
+}
+export const API = { system  , room , calc , utils , basic , weChat };
