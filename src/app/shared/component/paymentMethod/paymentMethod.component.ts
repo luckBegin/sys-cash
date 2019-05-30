@@ -18,13 +18,9 @@ export class PaymentMethodComponent implements OnInit{
 	private checkedMap: any = {} ;
 	private checkedInput: any = {} ;
 	private realGet: number = 0 ;
+	private otherOptions  = {};
 	
-	ngOnInit(): void {
-		// this.methods.forEach( item => {
-		// 	this.inputModel[item.value as string] = 0 ;
-		// 	this.checked[item.value as string ] = false ;
-		// });
-	}
+	ngOnInit(): void {}
 	
 	init(): void{
 		this.checked = [] ;
@@ -32,6 +28,7 @@ export class PaymentMethodComponent implements OnInit{
 			this.inputModel[ item.value as string ] = 0 ;
 			this.checkedMap[ item.value as string ] = false ;
 			this.checkedInput[ item.value as string ] = false ;
+			this.otherOptions[ item.key ] = [] ;
 		});
 	}
 	
@@ -50,7 +47,6 @@ export class PaymentMethodComponent implements OnInit{
 		if( this.checked.length > 0 ) {
 			let hasCheckedMoney = this.money;
 			let checkMethod = this.checked.length ;
-
 			this.checked.forEach( item => {
 				const money = Math.ceil(hasCheckedMoney / checkMethod ) ;
 				this.inputModel[item] = money ;
