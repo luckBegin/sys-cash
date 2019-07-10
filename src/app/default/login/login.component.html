@@ -1,33 +1,65 @@
-<div class="c-full-container login-container c-flex-row-center">
-	<div class="login-wrapper c-flex-row-start">
-		<div class="login-left c-flex-column-center">
-			<div class="qrWrapper c-flex-row-center" >
-				<qrcode *ngIf="qrStr" [qrdata]="qrStr" [size]="210" [level]="'M'"></qrcode>
+<div class="c-full-container bgContainer">
+	<div class="c-full-container bgContainer">
+		<div class="rightSection">
+			<div class="sea">
+				<span class="wave"></span>
+				<span class="wave"></span>
+				<span class="wave"></span>
 			</div>
-			<button (click)="getQrCode()" style="width: 220px" nz-button nzType="primary" class="btnLogin">
-				刷新二维码
-			</button>
-		</div>
-		<div class="login-right">
-			<div class="userNameWrapper">
-				<img src="/assets/img/logo.png" alt="" class='logo'>
-				<form nz-form [nzLayout]="'inline'" [formGroup]="form">
-					<div class="inputWrapper c-flex-row-start">
-						<img src="/assets/img/username.png" class="inputIcon">
-						<input type="text" class="input" formControlName="username" id="username"
-							   placeholder="请输入账号">
-					</div>
 
-					<div class="inputWrapper c-flex-row-start">
-						<img src="/assets/img/password.png" class="inputIcon">
-						<input type="password" class="input" formControlName="password" id="password"
-							   placeholder="请输入密码">
+			<div class="form-wrap">
+				<p class="mainTitle">
+					{{ CONFIG.projectTitle }}
+				</p>
+
+				<nz-tabset>
+					<nz-tab nzTitle="用户名登录">
+						<form nz-form [formGroup]="form" role="form">
+							<nz-form-item>
+								<nz-form-control>
+									<nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
+										<input nz-input formControlName="username" placeholder="请输入用户名">
+									</nz-input-group>
+									<nz-form-explain *ngIf="form.get('username').dirty && form.get('username').errors"
+									                 [@ngIfAnimate]>
+										请输入手机号!
+									</nz-form-explain>
+								</nz-form-control>
+							</nz-form-item>
+							<nz-form-item>
+								<nz-form-control>
+									<nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
+										<input nz-input formControlName="password" placeholder="请输入密码">
+									</nz-input-group>
+									<nz-form-explain *ngIf="form.get('password').dirty && form.get('password').errors"
+									                 [@ngIfAnimate]>
+										请输入密码!
+									</nz-form-explain>
+								</nz-form-control>
+							</nz-form-item>
+							<nz-form-item>
+								<button nz-button (click)="login($event)" nzType="primary" nzSize="large" nzBlock>
+									登录
+								</button>
+							</nz-form-item>
+						</form>
+					</nz-tab>
+					<nz-tab nzTitle="二维码登录">
+						<div nz-tooltip nzTitle="点击刷新二维码" class="qrWrapper c-flex-column-center" (click)="getQrCode()">
+							<qrcode *ngIf="qrStr" [qrdata]="qrStr" [size]="180" [level]="'M'"></qrcode>
+						</div>
+					</nz-tab>
+				</nz-tabset>
+
+				<div class="footer">
+					<div>
+						Copyright
+						<i class="anticon anticon-copyright"></i> {{ CONFIG.copyrightYear}}
+						<a>{{ CONFIG.copyright }}</a>
 					</div>
-				</form>
-				<button [disabled]="!form.valid" (click)="login($event)" nz-button nzType="primary" class="btnLogin">
-					登录
-				</button>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
