@@ -1,7 +1,7 @@
 <div class="c-flex-row-center c-full-container">
 	<div class="left">
 		<div class="switchTop">
-			<nz-tabset (nzSelectChange)="switchType($event)">
+			<nz-tabset (nzSelectChange)="switchType($event)" class="tab-bar classify-type">
 				<nz-tab nzTitle="按类型">
 					<div class='classifyItem' [ngClass]="{'itemActive': selectItem === 'all'}"
 						 (click)="switchItem('all')">
@@ -93,7 +93,7 @@
 	<ng-template #modalContent>
 		<reserve></reserve>
 		<div style="padding: 24px;" *ngIf="selectRoomItem.status === 0">
-			<nz-tabset [(nzSelectedIndex)]='selectTabIndex'>
+			<nz-tabset [(nzSelectedIndex)]='selectTabIndex' class="tab-bar">
 				<nz-tab nzTitle="计时">
 					<div *ngIf="roomTime.time.length === 0 " class="c-text-center weekPink-font">
 						暂未设置价格

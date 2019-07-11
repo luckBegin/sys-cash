@@ -6,11 +6,11 @@ import {AdaptorUtils, DateUtils} from '../../../shared/utils' ;
 import {ngIfAnimation} from '../../../router/router-animation' ;
 import {KeyboardService} from '../../../service/keyboard/keyboard.service' ;
 import {CONFIG} from '../../../CONFIG' ;
-import {OutrightComponent} from "../../../shared/component/cash/outright/outright.component";
-import {Service, Strategy} from "../../../../decorators";
-import {AdvanceComponent} from "../../../shared/component/cash/advanve/advance.component";
-import {CheckoutRoomComponent} from "../../../shared/component/casher/room/room.component";
-import {NzTabChangeEvent} from "ng-zorro-antd";
+import {OutrightComponent} from '../../../shared/component/cash/outright/outright.component';
+import {Service, Strategy} from '../../../../decorators';
+import {AdvanceComponent} from '../../../shared/component/cash/advanve/advance.component';
+import {CheckoutRoomComponent} from '../../../shared/component/casher/room/room.component';
+import {NzTabChangeEvent} from 'ng-zorro-antd';
 
 @Component({
 	selector: 'cash',
