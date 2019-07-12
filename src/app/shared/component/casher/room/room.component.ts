@@ -16,7 +16,7 @@ export class CheckoutRoomComponent implements OnInit {
 		private readonly service: CalcService,
 		private readonly paymentSer: PaymentService
 	) {
-	} ;
+	}
 	
 	type: number;
 	time: any;
@@ -24,7 +24,10 @@ export class CheckoutRoomComponent implements OnInit {
 	selectItem: any;
 	remark: string;
 	vipId: number = 5;
-	
+	userInfo: { vipInfo: any, typeInfo: any } = {
+		vipInfo: {},
+		typeInfo: {}
+	};
 	@ViewChild('paymentMethodComponent')
 	paymentMethodComponent: PaymentMethodComponent;
 	
@@ -88,6 +91,8 @@ export class CheckoutRoomComponent implements OnInit {
 		.subscribe((res: RESPONSE) => {
 			this.timePrice = res.data.timePrice.prices;
 			this.time = res.data.time;
+			this.userInfo.typeInfo = res.data.typeInfo;
+			this.userInfo.vipInfo = res.data.vipInfo;
 			this.calcMoney(res.data.outrightPrice);
 		});
 	}
@@ -104,6 +109,8 @@ export class CheckoutRoomComponent implements OnInit {
 		.subscribe((res: RESPONSE) => {
 			this.timePrice = res.data.prices;
 			this.time = res.data.time;
+			this.userInfo.typeInfo = res.data.typeInfo;
+			this.userInfo.vipInfo = res.data.vipInfo;
 			this.calcMoney();
 		});
 	}
@@ -152,7 +159,7 @@ export class CheckoutRoomComponent implements OnInit {
 			this.money.shouldMoney = !!this.vipId ? priceInfo.vipMoney : priceInfo.money;
 		}
 		
-		if ( this.withTimePrice ) {
+		if (this.withTimePrice) {
 			this.timePrice.forEach(item => {
 				this.money.allMoney += item.timePrice;
 				this.money.shouldMoney += !!this.vipId ? item.vipTimePrice : item.item.vipTimePrice;

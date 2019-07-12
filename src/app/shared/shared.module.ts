@@ -5,7 +5,7 @@ import {RoomComponent} from './component/room/room.component' ;
 import {ReserveComponent} from './component/reserve/reserve.component' ;
 import {OutrightComponent} from "./component/cash/outright/outright.component";
 import { AdvanceComponent } from './component/cash/advanve/advance.component' ;
-import {TimePipe, StatusPipe, CusCurrencyPipe, DatePipe , FilterSymbolPipe } from "./pipe";
+import {TimePipe, StatusPipe, CusCurrencyPipe, DatePipe, FilterSymbolPipe, DiscountPipe} from './pipe';
 import {FormsModule} from "@angular/forms";
 import { NgZorroAntdModule } from "ng-zorro-antd";
 import {HttpIntercept} from "./interceptor.service";
@@ -29,7 +29,7 @@ const components = [
 	RoomOrderComponent ,
 	ResetComponent
 ] ;
-const pipes = [ StatusPipe , TimePipe , CusCurrencyPipe , DatePipe , FilterSymbolPipe ] ;
+const pipes = [ StatusPipe , TimePipe , CusCurrencyPipe , DatePipe , FilterSymbolPipe , DiscountPipe ] ;
 @NgModule({
 	declarations: [
 		...components ,

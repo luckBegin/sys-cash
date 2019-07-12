@@ -21,7 +21,12 @@
 								{{ item.endTime | timePie:2:':' }}
 							</span>
 					</div>
-
+					<div style="width: 140px;margin-left: 20px;">
+						允许折扣 :
+						<span class="weekPink-font">
+							{{ item.canDiscount == '0' ? '不允许': '允许' }}
+						</span>
+					</div>
 					<div style="margin-left: 20px">
 						共计 :
 						<span class="weekPink-font">

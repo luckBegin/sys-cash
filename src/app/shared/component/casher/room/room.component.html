@@ -22,7 +22,58 @@
 					优惠金额:
 				</span>
 				<span class="weekPink-font">
-					{{ money.shouldMoney | cusCurrency }}
+					{{ money.allMoney - money.shouldMoney | cusCurrency }}
+				</span>
+			</div>
+		</div>
+
+		<div class="money" *ngIf="userInfo.vipInfo" style="border: none">
+			<div class="money-section c-flex-row-space">
+				<span>
+					会员卡号:
+				</span>
+				<span class="weekPink-font">
+					{{ userInfo.vipInfo.cardNumber }}
+				</span>
+			</div>
+			<div class="money-section c-flex-row-space">
+				<span>
+					会员类型:
+				</span>
+				<div>
+					<span class="weekPink-font">
+						{{ userInfo.typeInfo.name }}
+					</span>
+					<span style="margin:0 5px">
+						/
+					</span>
+					<span class="weekPink-font">
+						{{ userInfo.typeInfo.discount | discount }}
+					</span>
+				</div>
+			</div>
+			<div class="money-section c-flex-row-space">
+				<span>
+					会员余额:
+				</span>
+				<span class="weekPink-font">
+					{{ userInfo.vipInfo.balance | cusCurrency}}
+				</span>
+			</div>
+			<div class="money-section c-flex-row-space">
+				<span>
+					房费余额:
+				</span>
+				<span class="weekPink-font">
+					{{ userInfo.vipInfo.balanceForRoom | cusCurrency }}
+				</span>
+			</div>
+			<div class="money-section c-flex-row-space">
+				<span>
+					超市余额:
+				</span>
+				<span class="weekPink-font">
+					{{ userInfo.vipInfo.balanceForMarket | cusCurrency }}
 				</span>
 			</div>
 		</div>
