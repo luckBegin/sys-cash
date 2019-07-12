@@ -84,41 +84,41 @@ export class CashComponent implements OnInit, OnDestroy {
 			this.service.getArea(),
 			this.service.getType()
 		)
-			.subscribe((res: any[]) => {
-				this.ENUM_Area = AdaptorUtils.reflect(res[0].data, {id: 'value', name: 'key'});
-				this.ENUM_Type = AdaptorUtils.reflect(res[1].data, {id: 'value', name: 'key'});
-			});
+		.subscribe((res: any[]) => {
+			this.ENUM_Area = AdaptorUtils.reflect(res[0].data, {id: 'value', name: 'key'});
+			this.ENUM_Type = AdaptorUtils.reflect(res[1].data, {id: 'value', name: 'key'});
+		});
 	}
 	
 	getList(): void {
 		this.service.getList()
-			.subscribe((res: RESPONSE) => {
-				const rawData = {
-					type: [],
-					area: [],
-					count: {}
-				};
-				const data = res.data.data;
-				data.forEach(item => {
-					if (!rawData['type'][item.typeId]) {
-						rawData['type'][item.typeId] = [];
-					}
-					
-					if (!rawData['area'][item.areaId]) {
-						rawData['area'][item.areaId] = [];
-					}
-					
-					rawData['type'][item.typeId].push(item);
-					rawData['area'][item.areaId].push(item);
-					
-				});
+		.subscribe((res: RESPONSE) => {
+			const rawData = {
+				type: [],
+				area: [],
+				count: {}
+			};
+			const data = res.data.data;
+			data.forEach(item => {
+				if (!rawData['type'][item.typeId]) {
+					rawData['type'][item.typeId] = [];
+				}
 				
-				rawData.count = res.data.count;
-				this.rawData = rawData;
-				this.serveTimeStamp = res.timeStamp;
-				this.selectList();
-			}, err => {
+				if (!rawData['area'][item.areaId]) {
+					rawData['area'][item.areaId] = [];
+				}
+				
+				rawData['type'][item.typeId].push(item);
+				rawData['area'][item.areaId].push(item);
+				
 			});
+			
+			rawData.count = res.data.count;
+			this.rawData = rawData;
+			this.serveTimeStamp = res.timeStamp;
+			this.selectList();
+		}, err => {
+		});
 	}
 	
 	selectList(): void {
@@ -156,7 +156,7 @@ export class CashComponent implements OnInit, OnDestroy {
 	}
 	
 	switchType($event: NzTabChangeEvent): void {
-		const type = $event.index === 0 ? "type" : "area";
+		const type = $event.index === 0 ? 'type' : 'area';
 		this.selectType = type;
 		this.dataList = this.rawData[type];
 		this.selectItem = 'all';
@@ -172,7 +172,7 @@ export class CashComponent implements OnInit, OnDestroy {
 	modalShow: boolean = false;
 	selectRoomItem: any = null;
 	
-	@ViewChild("outrightComponent")
+	@ViewChild('outrightComponent')
 	outrightComponent: OutrightComponent;
 	
 	@ViewChild('advanceComponent')
@@ -200,62 +200,65 @@ export class CashComponent implements OnInit, OnDestroy {
 	
 	listenKeyEvent(): Subscription {
 		return this.keyboardSer.keyboardEvent$
-			.subscribe(key => {
+		.subscribe(key => {
 			
-			});
+		});
 	}
 	
 	getPriceByType(typeId: number): void {
 		this.service.getPriceByType({typeId})
-			.subscribe((res: RESPONSE) => {
-				const time = [];
-				const outright = [];
-				const advance = [];
-				// 判断是否每个分类可用
-				res.data.forEach(item => {
-					if (item.isTime === '1')
-						time.push(item);
-					
-					if (item.isOutright === '1')
-						outright.push(item);
-					
-					if (item.isAdvance === '1')
-						advance.push(item);
-				});
-				this.roomTime = {time, outright, advance};
-				
-				if (this.outrightComponent)
-					this.outrightComponent.init();
-				
-				if (this.advanceComponent) {
-					this.advanceComponent.init();
+		.subscribe((res: RESPONSE) => {
+			const time = [];
+			const outright = [];
+			const advance = [];
+			// 判断是否每个分类可用
+			res.data.forEach(item => {
+				if (item.isTime === '1') {
+					time.push(item);
 				}
 				
-				if (this.checkoutRoomComponent) {
-					this.checkoutRoomComponent.init();
+				if (item.isOutright === '1') {
+					outright.push(item);
 				}
 				
-				this.modalShow = true;
-			}, e => {
-				this.msg.error('查询房间价格异常' + e);
-			})
+				if (item.isAdvance === '1') {
+					advance.push(item);
+				}
+			});
+			this.roomTime = {time, outright, advance};
+			
+			if (this.outrightComponent) {
+				this.outrightComponent.init();
+			}
+			
+			if (this.advanceComponent) {
+				this.advanceComponent.init();
+			}
+			
+			if (this.checkoutRoomComponent) {
+				this.checkoutRoomComponent.init();
+			}
+			
+			this.modalShow = true;
+		}, e => {
+			this.msg.error('查询房间价格异常' + e);
+		});
 	}
 	
-	
 	@Strategy({
-		0: function ($event: MouseEvent) {
-			(this as CashComponent).openByTime($event)
+		0: function($event: MouseEvent) {
+			(this as CashComponent).openByTime($event);
 		}
 	})
 	open($event: Event): number {
 		return this.selectTabIndex;
 	}
 	
-	@Service("service.openByTime", true, function () {
+	@Service('service.openByTime', true, function() {
 		return {id: (this as CashComponent).selectRoomItem.id};
 	})
 	openByTime($event: MouseEvent): void {
-		this.msg.success("开房成功");
+		this.msg.success('开房成功');
 		this.modalShow = false;
 		this.getList();
 	};
@@ -287,7 +290,7 @@ export class CashComponent implements OnInit, OnDestroy {
 		this.checkoutRoomComponent.initPaymentMethod();
 	}
 	
-	@Service('service.openByOutright', true, function () {
+	@Service('service.openByOutright', true, function() {
 		const methodPayment = (this as CashComponent).checkoutRoomComponent.getMethodPayment();
 		methodPayment['id'] = (this as CashComponent).selectRoomId;
 		return methodPayment;
@@ -299,7 +302,7 @@ export class CashComponent implements OnInit, OnDestroy {
 		this.getList();
 	}
 	
-	@Service('service.openByAdvance', true, function () {
+	@Service('service.openByAdvance', true, function() {
 		const methodPayment = (this as CashComponent).checkoutRoomComponent.getMethodPayment();
 		methodPayment['id'] = (this as CashComponent).selectRoomId;
 		return methodPayment;
@@ -311,7 +314,7 @@ export class CashComponent implements OnInit, OnDestroy {
 		this.getList();
 	}
 	
-	@Service('service.checkoutWithTime', true, function () {
+	@Service('service.checkoutWithTime', true, function() {
 		const methodPayment = (this as CashComponent).checkoutRoomComponent.getMethodPayment();
 		methodPayment['id'] = (this as CashComponent).selectRoomId;
 		methodPayment['orderId'] = (this as CashComponent).selectRoomItem.orderId;
@@ -324,24 +327,24 @@ export class CashComponent implements OnInit, OnDestroy {
 		this.getList();
 	}
 	
-	@Service('service.reset', true, function () {
+	@Service('service.reset', true, function() {
 		return {
 			id: (this as CashComponent).selectRoomItem.id
-		}
+		};
 	})
 	reset($event: MouseEvent): void {
-		this.msg.success("操作成功");
+		this.msg.success('操作成功');
 		this.getList();
 		this.modalShow = false;
 	}
 	
-	@Service('service.clean', true, function () {
+	@Service('service.clean', true, function() {
 		return {
 			id: (this as CashComponent).selectRoomItem.id
-		}
+		};
 	})
 	clean($event: MouseEvent): void {
-		this.msg.success("操作成功");
+		this.msg.success('操作成功');
 		this.getList();
 		this.modalShow = false;
 	}

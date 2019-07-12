@@ -29,7 +29,7 @@
 							<nz-form-item>
 								<nz-form-control>
 									<nz-input-group nzSize="large" nzPrefixIcon="anticon anticon-user">
-										<input nz-input formControlName="password" placeholder="请输入密码">
+										<input type="password" nz-input formControlName="password" placeholder="请输入密码">
 									</nz-input-group>
 									<nz-form-explain *ngIf="form.get('password').dirty && form.get('password').errors"
 									                 [@ngIfAnimate]>
