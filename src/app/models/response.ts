@@ -1,14 +1,14 @@
 export interface RESPONSE {
 	success: boolean;
-	data: any
+	data: any ;
 	message: string;
 	code: number;
-	page: Page ;
-	timeStamp: number ;
-};
+	page: Page;
+	timeStamp: number;
+}
 
 interface Page {
-	pageSize: number
-	totalNumber: number
+	pageSize: number;
+	totalNumber: number;
 	totalPage: number;
-};
+}

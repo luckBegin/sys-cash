@@ -7,7 +7,7 @@ import {Router} from '@angular/router' ;
 import {WeChatService} from '../../service/weChat/weChat.service';
 import {interval, Observable} from 'rxjs';
 import {CONFIG} from '../../CONFIG';
-
+import * as md5 from 'md5' ;
 @Component({
 	selector: 'login',
 	templateUrl: './login.component.html',
@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
 			THIS.msg.warn('请输入账号和密码');
 			return false;
 		} else {
+			THIS.form.value.password = md5(THIS.form.value.password) ;
 			return THIS.form.value;
 		}
 	})

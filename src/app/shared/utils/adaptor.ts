@@ -1,6 +1,6 @@
-import {ENUM} from '../../models'
+import {ENUM} from '../../models' ;
 
-const checkType = function (target: any, type: string): boolean {
+const checkType = function(target: any, type: string): boolean {
 	return Object.prototype.toString.call(target) === `[object ${type}]`;
 };
 
@@ -14,16 +14,16 @@ class TreeNodes {
 		this.title = title;
 		this.key = key;
 		this.parentNode = parent;
-	};
+	}
 
 	getParentNode() {
 		return this.parentNode;
-	};
+	}
 
 	getChildren() {
 		return this.children;
 	}
-};
+}
 
 const recursive = function (target: any[], data: any[], map: { title: string, key: string | number }, parent = null) {
 	data.forEach(item => {

@@ -2,7 +2,10 @@ import {Component, OnInit} from '@angular/core' ;
 import {CONFIG} from '../../CONFIG' ;
 import {SesssionStorageService} from '../../service/storage';
 import {Router} from '@angular/router';
-import {MsgService} from '../../service';
+import {MsgService, StaffService} from '../../service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import * as md5 from 'md5' ;
+import {RESPONSE} from '../../models';
 
 @Component({
 	selector: 'layout',
@@ -13,7 +16,9 @@ export class LayoutComponent implements OnInit {
 	constructor(
 		private readonly sgo: SesssionStorageService,
 		private readonly router: Router,
-		private readonly msg: MsgService
+		private readonly msg: MsgService,
+		private readonly fb: FormBuilder ,
+		private readonly staffSer: StaffService
 	) {
 	}
 	
@@ -28,9 +33,44 @@ export class LayoutComponent implements OnInit {
 	name: string = '';
 	headImage: string = '';
 	
+	form: FormGroup = this.fb.group({
+		new: [null, [Validators.required]],
+		newRepeat: [null, [Validators.required]]
+	});
+	
+	changePassShow: boolean = false;
+	
+	changePass(): void {
+		this.form.reset();
+		this.changePassShow = true;
+	}
+	
 	logout(): void {
 		this.msg.success('退出成功');
 		this.sgo.clear();
 		this.router.navigate(['/login']);
+	}
+	
+	sure(): void {
+		if (!this.form.valid) {
+			this.msg.warn('请输入每一项信息');
+			return;
+		}
+		
+		const val = this.form.value;
+
+		if ( val.new !== val.newRepeat ) {
+			this.msg.warn('两次输入的密码不一致') ;
+			return ;
+		}
+		
+		this.staffSer.changePass({
+			new: md5(val.new)
+		})
+			.subscribe( ( res: RESPONSE ) => {
+				this.msg.success('修改成功') ;
+				this.changePassShow = false ;
+				this.logout() ;
+			});
 	}
 }

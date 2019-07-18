@@ -19,9 +19,9 @@
 						</span>
 					</div>
 					<div nz-menu class="width-sm">
-<!--						<div nz-menu-item (click)="changePassWord()"><i nz-icon type="user" class="mr-sm"></i>-->
-<!--							修改密码-->
-<!--						</div>-->
+						<div nz-menu-item (click)="changePass()"><i nz-icon type="user" class="mr-sm"></i>
+							修改密码
+						</div>
 						<div nz-menu-item (click)="logout()"><i nz-icon type="logout" class="mr-sm"></i>
 							退出登录
 						</div>
@@ -34,3 +34,52 @@
 		</div>
 	</div>
 </div>
+
+
+<nz-modal
+	[(nzVisible)]="changePassShow"
+	[nzTitle]="checkoutModalTitle"
+	[nzContent]="checkoutModalContent"
+	[nzFooter]="checkoutModalFotter"
+	(nzOnCancel)="changePassShow = false"
+>
+	<ng-template #checkoutModalTitle>
+		修改密码
+	</ng-template>
+
+	<ng-template #checkoutModalContent>
+		<form nz-form [nzLayout]="'inline'" [formGroup]="form">
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="new">
+					新密码
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input type="password" nz-input formControlName="new" id="new" placeholder="请输入新密码">
+					<nz-form-explain *ngIf="form.get('new').dirty && form.get('new').errors">
+					<span>
+						新密码不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="newRepeat">
+					再次输入
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input type="password" nz-input formControlName="newRepeat" id="newRepeat" placeholder="请输入再次输入新密码">
+					<nz-form-explain *ngIf="form.get('newRepeat').dirty && form.get('newRepeat').errors">
+					<span>
+						再次输入新密码不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+		</form>
+	</ng-template>
+
+	<ng-template #checkoutModalFotter>
+		<button nz-button nzType="primary" (click)="sure()" >确定</button>
+		<button nz-button (click)="changePassShow = false">关闭</button>
+	</ng-template>
+</nz-modal>
