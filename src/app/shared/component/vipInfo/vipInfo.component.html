@@ -3,7 +3,7 @@
 		<form nz-form [nzLayout]="'inline'" [formGroup]="form" class="common-form">
 			<div class="c-flex-row-start status">
 				<div>状态 :</div>
-				<div class="statusMark " [ngClass]="{'statusMark_normal':form.get('status').value === 0 ,'statusMark_withdraw':form.get('status').value === 1}">
+				<div class="statusMark " [ngClass]="{'statusMark_normal':form.get('status').value === 0 ,'statusMark_withdraw':form.get('status').value === 2}">
 					{{ form.get('status').value === 2 ? '冻结' : '正常' }}
 				</div>
 			</div>
@@ -52,8 +52,8 @@
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
 					<nz-select nzPlaceHolder='性别' formControlName="sex" id="sex">
-						<nz-option nzLabel="男" nzValue="0"></nz-option>
-						<nz-option nzLabel="女" nzValue="1"></nz-option>
+						<nz-option nzLabel="男" [nzValue]="0"></nz-option>
+						<nz-option nzLabel="女" [nzValue]="1"></nz-option>
 					</nz-select>
 					<nz-form-explain *ngIf="form.get('sex').dirty && form.get('sex').errors">
 					<span>
@@ -64,7 +64,7 @@
 			</nz-form-item>
 
 			<nz-form-item class='c-formSec'>
-				<nz-form-label [nzSm]="5"  nzFor="new">
+				<nz-form-label [nzSm]="5" nzRequired nzFor="new">
 					会员类型
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
@@ -101,6 +101,15 @@
 					<input class=""  nz-input formControlName="remark" id="remark" placeholder="备注">
 				</nz-form-control>
 			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5"  nzFor="new">
+					状态原因
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input class="" nz-input formControlName="reason" id="reason" placeholder="状态原因">
+				</nz-form-control>
+			</nz-form-item>
 		</form>
 	</div>
 	<div class="right">
@@ -127,5 +136,19 @@
 		*ngIf="form.get('id').value"
 	>
 		更新
+	</button>
+	<button
+		nz-button class="operate-btn" style="background: rgb(62, 127, 52);"
+		(click)="freezeOrRecover($event , 'freeze')"
+		*ngIf="form.get('id').value && form.get('status').value === 0"
+	>
+		冻结
+	</button>
+	<button
+		nz-button class="operate-btn" style="background: rgb(62, 127, 52);"
+		(click)="freezeOrRecover($event , 'recover')"
+		*ngIf="form.get('id').value && form.get('status').value === 2"
+	>
+		恢复
 	</button>
 </div>

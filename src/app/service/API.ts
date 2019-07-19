@@ -41,6 +41,6 @@ const weChat = {
 
 const vip = {
 	info: HOST + '/vip/user' ,
-	type: HOST + '/vip/type/all'
+	type: HOST + '/vip/type/all' ,
 };
 export const API = {system, room, calc, utils, basic, weChat , vip };

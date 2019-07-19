@@ -32,4 +32,12 @@ export class VipService {
 	@PUT(API. vip.info)
 	update(data?: any): Observable<RESPONSE> | any {
 	}
+	
+	@POST(API.vip.info + '/freeze')
+	freeze(data?: any): Observable<RESPONSE> | any {
+	}
+	
+	@POST(API.vip.info + '/recover')
+	recover(data?: any): Observable<RESPONSE> | any {
+	}
 }

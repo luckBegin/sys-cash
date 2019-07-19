@@ -6,6 +6,7 @@ import {ENUM, RESPONSE} from '../../../models';
 import {map} from 'rxjs/operators';
 import {AdaptorUtils, DateUtils} from '../../utils';
 import {ngIfAnimation} from '../../../router/router-animation';
+import {Observable} from 'rxjs';
 
 @Component({
 	selector: 'common-vip-info',
@@ -39,7 +40,8 @@ export class VipInfoComponent {
 		sex: [ null , [ Validators.required ]],
 		name: [ null , [Validators.required ]],
 		id: [ null ],
-		remark: [ null ]
+		remark: [ null ] ,
+		reason: [ null ]
 	});
 	
 	public init(): void {
@@ -64,6 +66,8 @@ export class VipInfoComponent {
 			
 			if ( data.length === 1 ) {
 				this.msg.success('查询成功') ;
+				// data[0].sex = data[0].sex.toString() ;
+				// data[0].vipTypeId = data[0].vipTypeId.toString() ;
 				this.form.patchValue( data[0] ) ;
 				return ;
 			}
@@ -73,11 +77,10 @@ export class VipInfoComponent {
 	
 	ENUM_VipTypes!: ENUM[] ;
 	private getType(): void {
-		this.service.vipType({ default: 0})
+		this.service.vipType()
 			.pipe( map( (res: RESPONSE ) => res.data))
 			.subscribe( ( data: any[] ) => {
 				this.ENUM_VipTypes = AdaptorUtils.reflect( data , { id: 'value' , name: 'key'}) ;
-				console.log( this.ENUM_VipTypes ) ;
 			});
 	}
 	
@@ -133,6 +136,33 @@ export class VipInfoComponent {
 			}
 			el.disabled = false ;
 		});
+	}
+	
+	freezeOrRecover($event: MouseEvent , type: string): void {
+		let serviceEvent$!: ( pata?: any) => Observable< RESPONSE >;
+		const value  = this.form.value ;
+		
+		if ( !value.reason ) {
+			this.msg.warn('请输入状态原因') ;
+			return ;
+		}
+		
+		if ( type  === 'recover') {
+			serviceEvent$ = this.service.recover ;
+		}
+		
+		if ( type === 'freeze' ) {
+			serviceEvent$ = this.service.freeze ;
+		}
+		serviceEvent$.call( this.service, { id: value.id  , reason: value.reason } )
+			.subscribe( ( res: RESPONSE ) => {
+				if ( res.success ) {
+					this.msg.success('操作成功') ;
+					this.query('id') ;
+				} else {
+					this.msg.error('操作失败,原因:' + res.message ) ;
+				}
+			});
 	}
 }
 
