@@ -9,11 +9,17 @@
 			</div>
 
 			<div style="flex : 1" class="c-flex-row-end">
-				<nz-dropdown nzPlacement="bottomRight" >
+				<div class="c-flex-row-end" style="margin-right: 100px">
+					<div class='operate-icon' (click)="vipInfo()">
+						<i nz-icon nzType="team" nzTheme="outline"></i>
+						会员查询
+					</div>
+				</div>
+				<nz-dropdown nzPlacement="bottomRight">
 					<div class="alain-default__nav-item d-flex align-items-center px-sm" nz-dropdown>
 						<nz-avatar
-								[nzSrc]="headImage"
-								nzSize="default" class="mr-sm"></nz-avatar>
+							[nzSrc]="headImage"
+							nzSize="default" class="mr-sm"></nz-avatar>
 						<span style="color: #fff;margin-left:5px">
 							{{ name }}
 						</span>
@@ -34,7 +40,6 @@
 		</div>
 	</div>
 </div>
-
 
 <nz-modal
 	[(nzVisible)]="changePassShow"
@@ -79,7 +84,30 @@
 	</ng-template>
 
 	<ng-template #checkoutModalFotter>
-		<button nz-button nzType="primary" (click)="sure()" >确定</button>
+		<button nz-button nzType="primary" (click)="sure()">确定</button>
 		<button nz-button (click)="changePassShow = false">关闭</button>
+	</ng-template>
+</nz-modal>
+
+
+<nz-modal
+	[(nzVisible)]="vipInfoModal"
+	[nzTitle]="vipInfoModalTitle"
+	[nzContent]="vipInfoModalContent"
+	[nzFooter]="vipInfoModalFotter"
+	(nzOnCancel)="vipInfoModal = false"
+	class="common-modal vipInfoModal"
+	nzWidth="1000"
+	[nzStyle]="{top:'50px'}"
+>
+	<ng-template #vipInfoModalTitle>
+		会员信息查看
+	</ng-template>
+
+	<ng-template #vipInfoModalContent>
+		<common-vip-info #vipInfoComponent></common-vip-info>
+	</ng-template>
+
+	<ng-template #vipInfoModalFotter>
 	</ng-template>
 </nz-modal>

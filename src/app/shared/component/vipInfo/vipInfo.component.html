@@ -1,0 +1,131 @@
+<div class="c-full-container c-flex-row-start container">
+	<div class="left">
+		<form nz-form [nzLayout]="'inline'" [formGroup]="form" class="common-form">
+			<div class="c-flex-row-start status">
+				<div>状态 :</div>
+				<div class="statusMark " [ngClass]="{'statusMark_normal':form.get('status').value === 0 ,'statusMark_withdraw':form.get('status').value === 1}">
+					{{ form.get('status').value === 2 ? '冻结' : '正常' }}
+				</div>
+			</div>
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzFor="new">
+					卡号
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input (keydown.enter)="query('cardNumber')" class=""  nz-input formControlName="cardNumber" id="cardNumber" placeholder="卡号">
+					<nz-form-explain *ngIf="form.get('cardNumber').dirty && form.get('cardNumber').errors">
+					<span>
+						卡号不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="new">
+					姓名
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input (keydown.enter)="query('name')" class=""  nz-input formControlName="name" id="name" placeholder="姓名">
+					<nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
+					<span>
+						姓名不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="new">
+					电话
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input (keydown.enter)="query('tel')" nz-input formControlName="tel" id="tel" placeholder="电话">
+					<nz-form-explain *ngIf="form.get('tel').dirty && form.get('tel').errors">
+					<span>
+						电话不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5" nzRequired nzFor="new">
+					性别
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<nz-select nzPlaceHolder='性别' formControlName="sex" id="sex">
+						<nz-option nzLabel="男" nzValue="0"></nz-option>
+						<nz-option nzLabel="女" nzValue="1"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('sex').dirty && form.get('sex').errors">
+					<span>
+						性别不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5"  nzFor="new">
+					会员类型
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<nz-select nzPlaceHolder='会员类型' formControlName="vipTypeId" id="vipTypeId">
+						<nz-option *ngFor="let item of ENUM_VipTypes" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+					</nz-select>
+					<nz-form-explain *ngIf="form.get('vipTypeId').dirty && form.get('vipTypeId').errors">
+					<span>
+						会员类型不能为空
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5"  nzFor="new">
+					生日
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input class=""  nz-input formControlName="birthDay" id="birthDay" placeholder="生日">
+					<nz-form-explain *ngIf="form.get('birthDay').dirty && form.get('birthDay').errors">
+					<span>
+						生日格式与5-12相同
+					</span>
+					</nz-form-explain>
+				</nz-form-control>
+			</nz-form-item>
+
+			<nz-form-item class='c-formSec'>
+				<nz-form-label [nzSm]="5"  nzFor="new">
+					备注
+				</nz-form-label>
+				<nz-form-control [nzSm]="18" [nzOffset]='1'>
+					<input class=""  nz-input formControlName="remark" id="remark" placeholder="备注">
+				</nz-form-control>
+			</nz-form-item>
+		</form>
+	</div>
+	<div class="right">
+
+	</div>
+</div>
+<div class="operate-wrapper">
+	<button
+		nz-button class="operate-btn" style="background:rgb(166, 98, 0)"
+		(click)="reset()"
+	>
+		清空
+	</button>
+	<button
+		nz-button class="operate-btn" style="background:rgb(51, 122, 183)"
+		(click)="create($event)"
+		*ngIf="!form.get('id').value"
+	>
+		新建
+	</button>
+	<button
+		nz-button class="operate-btn" style="background:rgb(51, 122, 183)"
+		(click)="update($event)"
+		*ngIf="form.get('id').value"
+	>
+		更新
+	</button>
+</div>

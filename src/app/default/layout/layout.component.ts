@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core' ;
+import {Component, OnInit, ViewChild} from '@angular/core' ;
 import {CONFIG} from '../../CONFIG' ;
 import {SesssionStorageService} from '../../service/storage';
 import {Router} from '@angular/router';
@@ -6,6 +6,7 @@ import {MsgService, StaffService} from '../../service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as md5 from 'md5' ;
 import {RESPONSE} from '../../models';
+import {VipInfoComponent} from '../../shared/component/vipInfo/vipInfo.component';
 
 @Component({
 	selector: 'layout',
@@ -17,7 +18,7 @@ export class LayoutComponent implements OnInit {
 		private readonly sgo: SesssionStorageService,
 		private readonly router: Router,
 		private readonly msg: MsgService,
-		private readonly fb: FormBuilder ,
+		private readonly fb: FormBuilder,
 		private readonly staffSer: StaffService
 	) {
 	}
@@ -58,19 +59,27 @@ export class LayoutComponent implements OnInit {
 		}
 		
 		const val = this.form.value;
-
-		if ( val.new !== val.newRepeat ) {
-			this.msg.warn('两次输入的密码不一致') ;
-			return ;
+		
+		if (val.new !== val.newRepeat) {
+			this.msg.warn('两次输入的密码不一致');
+			return;
 		}
 		
 		this.staffSer.changePass({
 			new: md5(val.new)
 		})
-			.subscribe( ( res: RESPONSE ) => {
-				this.msg.success('修改成功') ;
-				this.changePassShow = false ;
-				this.logout() ;
-			});
+		.subscribe((res: RESPONSE) => {
+			this.msg.success('修改成功');
+			this.changePassShow = false;
+			this.logout();
+		});
 	}
+	
+	vipInfoModal: boolean = false;
+	@ViewChild('vipInfoComponent') vipInfoComponent: VipInfoComponent ;
+	vipInfo(): void {
+		this.vipInfoComponent.init() ;
+		this.vipInfoModal = true;
+	}
+	
 }
