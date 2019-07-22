@@ -1,4 +1,4 @@
-<div class="light-font c-flex-row-start section-wrapper" *ngIf="outrightArr.length > 0 ">
+<div class="light-font c-flex-row-start section-wrapper" *ngIf="outrightArr && selectOutright">
 	<div style="margin-right: 10px">
 		买断档期 :
 	</div>
@@ -42,7 +42,7 @@
 	</div>
 </div>
 
-<div class="light-font priceWrapper">
+<div class="light-font priceWrapper" *ngIf="outrightArr && selectOutright">
 	<div class="detail-wrapper">
 		价格明细:
 		<div>

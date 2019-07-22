@@ -156,12 +156,13 @@ export class CheckoutRoomComponent implements OnInit {
 		if (this.type === 1) {
 			this.money.allMoney = priceInfo.money;
 			this.money.shouldMoney = !!this.vipId ? priceInfo.vipMoney : priceInfo.money;
+			this.selectItem.price.vipPrice =  priceInfo.vipMoney ;
 		}
 		
 		if (this.withTimePrice) {
 			this.timePrice.forEach(item => {
 				this.money.allMoney += item.timePrice;
-				this.money.shouldMoney += !!this.vipId ? item.vipTimePrice : item.item.vipTimePrice;
+				this.money.shouldMoney += !!this.vipId ? item.vipTimePrice : item.timePrice;
 			});
 		}
 	}
@@ -178,6 +179,7 @@ export class CheckoutRoomComponent implements OnInit {
 	}
 	
 	getMethodPayment(): any {
+		console.log( this ) ;
 		return {
 			methods: this.paymentMethodComponent.getMoneyMethod(),
 			remark: this.remark,

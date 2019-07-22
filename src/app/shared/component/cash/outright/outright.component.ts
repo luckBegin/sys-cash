@@ -66,7 +66,9 @@ export class OutrightComponent implements OnInit {
 		}
 	}
 	
-	init(): void {
+	init(outright: any[], typeId: number): void {
+		this.outrightArr = outright;
+		this.typeId = typeId;
 		this.selectOutright = this.outrightArr[0];
 		this.timePrice = [];
 		this.money = {

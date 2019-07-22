@@ -147,14 +147,19 @@ export class VipInfoComponent {
 			this.msg.warn('请填写必填信息') ;
 			return ;
 		}
+		
 		const el = $event.currentTarget as HTMLButtonElement ;
+		
 		el.disabled = true ;
+		
 		const value = this.form.value ;
+		
 		value.joinTime = DateUtils.format(value.joinTime , 'y-m-d h:i:s') ;
+		
 		this.service.update( value )
 		.subscribe( ( res: RESPONSE ) => {
 			if ( res.success ) {
-				this.msg.success('更新') ;
+				this.msg.success('更新成功') ;
 			} else {
 				this.msg.error('新建失败,原因:' + res.message ) ;
 			}

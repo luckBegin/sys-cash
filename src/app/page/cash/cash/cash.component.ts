@@ -228,11 +228,11 @@ export class CashComponent implements OnInit, OnDestroy {
 			this.roomTime = {time, outright, advance};
 			
 			if (this.outrightComponent) {
-				this.outrightComponent.init();
+				this.outrightComponent.init( this.roomTime.outright , this.selectRoomItem.typeId );
 			}
 			
 			if (this.advanceComponent) {
-				this.advanceComponent.init();
+				this.advanceComponent.init( this.selectRoomItem.typeId );
 			}
 			
 			if (this.checkoutRoomComponent) {
@@ -246,7 +246,7 @@ export class CashComponent implements OnInit, OnDestroy {
 	}
 	
 	@Strategy({
-		0: function($event: MouseEvent) {
+		0($event: MouseEvent) {
 			(this as CashComponent).openByTime($event);
 		}
 	})
@@ -261,7 +261,7 @@ export class CashComponent implements OnInit, OnDestroy {
 		this.msg.success('开房成功');
 		this.modalShow = false;
 		this.getList();
-	};
+	}
 	
 	checkoutShow: boolean = false;
 	
