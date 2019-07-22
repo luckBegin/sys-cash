@@ -3,14 +3,16 @@ import {HttpClient} from '@angular/common/http' ;
 import {MsgService} from '../msg/msg.service' ;
 import {GET, POST} from '../../../decorators' ;
 import {API} from '../API' ;
-import {ENUM} from '../../models'
+import {ENUM, RESPONSE} from '../../models';
+import {Observable} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class RoomService {
 	constructor(
 		private readonly http: HttpClient,
 		private readonly msg: MsgService
-	) {}
+	) {
+	}
 	
 	static ENUM_Status: ENUM[] = [
 		{key: '空房', value: 0},
@@ -25,45 +27,62 @@ export class RoomService {
 	];
 	
 	@GET(API.room.area)
-	getArea(): any {}
-
+	getArea(): Observable<RESPONSE> | any {
+	}
+	
 	@GET(API.room.type)
-	getType(): any {}
-
+	getType(): Observable<RESPONSE> | any {
+	}
+	
 	@GET(API.room.list)
-	getList(): any {}
+	getList(): Observable<RESPONSE> | any {
+	}
 	
 	@GET(API.room.time)
-	getTime(): any{} ;
+	getTime(): Observable<RESPONSE> | any {
+	}
 	
 	@GET(API.room.getPriceByType)
-	getPriceByType( query: any ): any{} ;
-	
+	getPriceByType(query: any): Observable<RESPONSE> | any {
+	}
 	
 	@POST(API.room.openByTime)
-	openByTime( data: any): any{} ;
+	openByTime(data: any): Observable<RESPONSE> | any {
+	}
 	
 	@POST(API.room.openByOutright)
-	openByOutright( data: any ): any{} ;
+	openByOutright(data: any): Observable<RESPONSE> | any {
+	}
 	
 	@GET(API.room.roomTodayOrder)
-	roomTodayOrderList( query: any ): any{} ;
+	roomTodayOrderList(query: any): Observable<RESPONSE> | any {
+	}
 	
 	@GET(API.room.roomOrderItem)
-	roomOrderItemList( query: any ): any{} ;
+	roomOrderItemList(query: any): Observable<RESPONSE> | any {
+	}
 	
 	@POST(API.room.checkoutWithTime)
-	checkoutWithTime( data: any ): any{} ;
+	checkoutWithTime(data: any): Observable<RESPONSE> | any {
+	}
 	
 	@POST(API.room.reset)
-	reset( data: any): any{} ;
+	reset(data: any): Observable<RESPONSE> | any {
+	}
 	
 	@POST(API.room.clean)
-	clean( data: any): any{} ;
+	clean(data: any): Observable<RESPONSE> | any {
+	}
 	
 	@POST(API.room.openByAdvance)
-	openByAdvance( data: any): any{} ;
+	openByAdvance(data: any): Observable<RESPONSE> | any {
+	}
 	
 	@POST(API.room.resetAll)
-	resetAll( data ?: any): any{} ;
+	resetAll(data ?: any): Observable<RESPONSE> | any {
+	}
+	
+	@GET(API.room.getAllVipOrders)
+	getAllVipOrders(para?: { vipId: number }): Observable<RESPONSE> | any {
+	}
 }

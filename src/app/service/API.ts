@@ -22,6 +22,7 @@ const room = {
 	reset: HOST + '/room/operate/reset',
 	clean: HOST + '/room/operate/clean',
 	resetAll: HOST + '/room/operate/resetAll',
+	getAllVipOrders: HOST + '/room/order/all/byVipId'
 };
 
 const calc = {

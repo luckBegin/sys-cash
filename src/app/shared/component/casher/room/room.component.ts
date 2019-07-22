@@ -24,10 +24,7 @@ export class CheckoutRoomComponent implements OnInit {
 	selectItem: any;
 	remark: string;
 	vipId: number = 5;
-	userInfo: { vipInfo: any, typeInfo: any } = {
-		vipInfo: {},
-		typeInfo: {}
-	};
+	userInfo: { vipInfo?: any, typeInfo?: any } = {};
 	@ViewChild('paymentMethodComponent')
 	paymentMethodComponent: PaymentMethodComponent;
 	
@@ -126,6 +123,8 @@ export class CheckoutRoomComponent implements OnInit {
 		.subscribe((res: RESPONSE) => {
 			this.timePrice = res.data.prices;
 			this.time = res.data.time;
+			this.userInfo.typeInfo = res.data.typeInfo;
+			this.userInfo.vipInfo = res.data.vipInfo;
 			this.calcMoney();
 		});
 	}

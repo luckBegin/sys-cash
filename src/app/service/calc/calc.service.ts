@@ -16,5 +16,5 @@ export class CalcService {
 	timePrice( para: any ): any {}
 	
 	@GET(API.calc.outrightPrice , '计算金额失败 , 原因:')
-	outrightPrice( para: any): any{} ;
+	outrightPrice( para: any): any {} 
 }

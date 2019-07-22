@@ -1,48 +1,135 @@
-.left ,
-.right{
-	padding: 24px 0;
+.left,
+.right {
+	padding: 15px 0;
+	height: 100%;
 }
-.left{
+
+.left {
 	width: 40%;
 	border-right: 1px solid #444;
+	padding-left: 26px;
 }
-.right{
+
+.right {
 	width: 60%;
 }
-.status{
+
+.status {
 	margin-bottom: 20px !important;
 	height: 40px;
 }
-.status>div:nth-of-type(1){
+
+.status > div:nth-of-type(1) {
 	color: #e2e5e8;
 	padding: 0 15px;
 }
-.statusMark{
+
+.statusMark {
 	border-radius: 5px;
 	padding: 2px 10px;
 	color: #fff;
 }
-.statusMark_normal{
+
+.statusMark_normal {
 	background: rgb(51, 122, 183);
 }
-.statusMark_withdraw{
+
+.statusMark_withdraw {
 	background: rgb(217, 84, 79);
 }
 
-.container{
-	padding: 0 24px;
+.container {
 	height: 550px;
 	overflow-y: hidden;
 }
-.operate-wrapper{
+
+.operate-wrapper {
 	border-top: 1px solid #444;
 	padding: 20px 24px 0 24px;
 }
-.operate-btn{
+
+.operate-btn {
 	margin-right: 10px;
 }
-.operate-btn ,
-.operate-btn:hover{
-	color:#fff;
+
+.operate-btn,
+.operate-btn:hover {
+	color: #fff;
 	border: none;
+}
+
+.selectUserModal ::ng-deep .ant-modal-header {
+	background: #f5f5f5;
+}
+
+.selectUserModal ::ng-deep .ant-modal-footer {
+	display: none;
+}
+
+.selectUserModal ::ng-deep .ant-modal-body {
+	background: rgb(27, 27, 33);
+	padding: 0;
+}
+.user-select-wrap{
+	border-bottom: 1px solid #565656;
+	padding: 10px;
+	color:#e7eaed !important ;
+	transition: background-color .3s ease-in;
+	cursor: pointer;
+}
+.user-select-wrap:hover{
+	background: #3a3a3f;
+}
+.user-select-item span ,
+.vipInfo span{
+	color:#fd92af !important ;
+}
+.user-select-item{
+	margin-bottom: 5px;
+}
+
+.vipInfo{
+	width: 25%;
+	color:#e7eaed ;
+}
+
+.section>div{
+	margin-bottom: 10px;
+}
+.section{
+	border-bottom: 1px solid #565656;
+	padding-left: 24px;
+}
+.vip-records{
+	height: calc(100% - 48px);
+	overflow-y: hidden;
+}
+.vip-records ::ng-deep .ant-tabs-nav .ant-tabs-tab{
+	color:#e7eaed ;
+}
+.vip-records ::ng-deep .ant-tabs-nav .ant-tabs-tab-active ,
+.vip-records ::ng-deep .ant-tabs-nav .ant-tabs-tab:hover{
+	color:#1890ff ;
+}
+.vip-records ::ng-deep .ant-tabs-bar{
+	border-bottom: 1px solid #565656;
+	margin: 0;
+}
+
+.vip-records ::ng-deep .ant-tabs{
+	height: 100%;
+}
+.vip-records ::ng-deep .ant-tabs-content{
+	height: calc( 100% - 44px );
+}
+.record-tab ::ng-deep .ant-tabs .ant-tabs-left-content{
+	border-left: none ;
+	padding: 0;
+}
+.record-tab ::ng-deep .ant-tabs-content{
+	height: 100%;
+}
+.record-tab ::ng-deep .ant-tabs .ant-tabs-left-bar{
+	border-right: 1px solid #444 ;
+	border-bottom: none ;
 }

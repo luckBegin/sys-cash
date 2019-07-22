@@ -16,6 +16,7 @@ import {PaymentMethodComponent} from './component/paymentMethod/paymentMethod.co
 import {RoomOrderComponent} from './component/order/room/roomOrder.component';
 import {ResetComponent} from './component/reset/reset.component';
 import {VipInfoComponent} from './component/vipInfo/vipInfo.component';
+import {NullPipe} from './pipe/null.pipe';
 
 const modules = [CommonModule, FormsModule, NgZorroAntdModule];
 const components = [
@@ -31,7 +32,7 @@ const components = [
 	ResetComponent,
 	VipInfoComponent
 ];
-const pipes = [StatusPipe, TimePipe, CusCurrencyPipe, DatePipe, FilterSymbolPipe, DiscountPipe];
+const pipes = [StatusPipe, TimePipe, CusCurrencyPipe, DatePipe, FilterSymbolPipe, DiscountPipe , NullPipe ];
 
 @NgModule({
 	declarations: [

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {MsgService, SesssionStorageService} from '../../../service';
+import {MsgService, RoomService, SesssionStorageService} from '../../../service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {VipService} from '../../../service/vip/vip.service';
 import {ENUM, RESPONSE} from '../../../models';
@@ -7,6 +7,8 @@ import {map} from 'rxjs/operators';
 import {AdaptorUtils, DateUtils} from '../../utils';
 import {ngIfAnimation} from '../../../router/router-animation';
 import {Observable} from 'rxjs';
+import {$RBRACE} from 'codelyzer/angular/styles/chars';
+import {Strategy} from '../../../../decorators';
 
 @Component({
 	selector: 'common-vip-info',
@@ -18,13 +20,12 @@ export class VipInfoComponent {
 		private readonly msg: MsgService,
 		private readonly ss: SesssionStorageService,
 		private readonly fb: FormBuilder,
-		private readonly service: VipService
+		private readonly service: VipService ,
+		private readonly roomSer: RoomService
 	) {
 	}
 	
-	private currentVipId: number;
-	
-	form: FormGroup = this.fb.group({
+	public form: FormGroup = this.fb.group({
 		vipTypeId: [null, [Validators.required]],
 		integral: [0],
 		balance: [0],
@@ -44,15 +45,25 @@ export class VipInfoComponent {
 		reason: [ null ]
 	});
 	
+	public tabIndex: number = 0 ;
+	
+	public selectUserModal: boolean = false ;
+	
+	public selectUsers: any[] = []  ;
+	
 	public init(): void {
 		if ( !this.ENUM_VipTypes ) {
 			this.getType() ;
 		}
 		this.form.reset() ;
+		this.userInfo = {} ;
 		this.form.patchValue({ status: 0 }) ;
 	}
 	
-	vipQueryList!: any[] ;
+	public vipQueryList!: any[] ;
+	
+	public userInfo: any = {} ;
+	
 	private query(type: string): void {
 		const para = {};
 		para[type] = this.form.value[type];
@@ -68,14 +79,19 @@ export class VipInfoComponent {
 				this.msg.success('查询成功') ;
 				// data[0].sex = data[0].sex.toString() ;
 				// data[0].vipTypeId = data[0].vipTypeId.toString() ;
-				this.form.patchValue( data[0] ) ;
+				this.setUserInfo( data[0] ) ;
 				return ;
 			}
 			
+			if ( data.length > 1 ) {
+				this.selectUserModal = true ;
+				this.selectUsers = data ;
+			}
 		});
 	}
 	
-	ENUM_VipTypes!: ENUM[] ;
+	public ENUM_VipTypes!: ENUM[] ;
+	
 	private getType(): void {
 		this.service.vipType()
 			.pipe( map( (res: RESPONSE ) => res.data))
@@ -89,6 +105,7 @@ export class VipInfoComponent {
 		this.form.patchValue({
 			status: 0 ,
 		}) ;
+		this.userInfo = {} ;
 	}
 	
 	private create($event: MouseEvent): void {
@@ -111,6 +128,7 @@ export class VipInfoComponent {
 				if ( res.success ) {
 					this.msg.success('新建成功') ;
 					this.form.patchValue( res.data ) ;
+					this.userInfo = this.form.value ;
 				} else {
 					this.msg.error('新建失败,原因:' + res.message ) ;
 				}
@@ -118,7 +136,7 @@ export class VipInfoComponent {
 			});
 	}
 	
-	update($event: MouseEvent): void {
+	public update($event: MouseEvent): void {
 		if ( !this.form.valid ) {
 			this.msg.warn('请填写必填信息') ;
 			return ;
@@ -138,7 +156,7 @@ export class VipInfoComponent {
 		});
 	}
 	
-	freezeOrRecover($event: MouseEvent , type: string): void {
+	public freezeOrRecover($event: MouseEvent , type: string): void {
 		let serviceEvent$!: ( pata?: any) => Observable< RESPONSE >;
 		const value  = this.form.value ;
 		
@@ -154,6 +172,7 @@ export class VipInfoComponent {
 		if ( type === 'freeze' ) {
 			serviceEvent$ = this.service.freeze ;
 		}
+		
 		serviceEvent$.call( this.service, { id: value.id  , reason: value.reason } )
 			.subscribe( ( res: RESPONSE ) => {
 				if ( res.success ) {
@@ -164,6 +183,32 @@ export class VipInfoComponent {
 				}
 			});
 	}
+	public selectUser(item: any): void {
+		this.setUserInfo( item ) ;
+		this.selectUserModal = false ;
+	}
+	
+	private setUserInfo( item: any ): void {
+		this.form.patchValue( item ) ;
+		this.userInfo = item ;
+		this.tabChange() ;
+	}
+	
+	recordData = { consume: [] , deposit: [] , integral: [] } ;
+	@Strategy({
+		0($event: MouseEvent) {
+			const _this = (this as VipInfoComponent) ;
+			const vipId = _this.form.value.id ;
+			_this.roomSer.getAllVipOrders({vipId})
+				.subscribe( ( res: RESPONSE ) => {
+					_this.recordData.consume = res.data ;
+				});
+		},
+	})
+	public tabChange( ): number {
+		return this.tabIndex ;
+	}
+	
 }
 
 const birthDayValidation = ( control: FormControl ): any => {
