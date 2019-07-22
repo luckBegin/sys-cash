@@ -3,7 +3,8 @@
 		<form nz-form [nzLayout]="'inline'" [formGroup]="form" class="common-form">
 			<div class="c-flex-row-start status">
 				<div>状态 :</div>
-				<div class="statusMark " [ngClass]="{'statusMark_normal':form.get('status').value === 0 ,'statusMark_withdraw':form.get('status').value === 2}">
+				<div class="statusMark "
+				     [ngClass]="{'statusMark_normal':form.get('status').value === 0 ,'statusMark_withdraw':form.get('status').value === 2}">
 					{{ form.get('status').value === 2 ? '冻结' : '正常' }}
 				</div>
 			</div>
@@ -12,7 +13,8 @@
 					卡号
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
-					<input (keydown.enter)="query('cardNumber')" class=""  nz-input formControlName="cardNumber" id="cardNumber" placeholder="卡号">
+					<input (keydown.enter)="query('cardNumber')" class="" nz-input formControlName="cardNumber"
+					       id="cardNumber" placeholder="卡号">
 					<nz-form-explain *ngIf="form.get('cardNumber').dirty && form.get('cardNumber').errors">
 					<span>
 						卡号不能为空
@@ -25,7 +27,8 @@
 					姓名
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
-					<input (keydown.enter)="query('name')" class=""  nz-input formControlName="name" id="name" placeholder="姓名">
+					<input (keydown.enter)="query('name')" class="" nz-input formControlName="name" id="name"
+					       placeholder="姓名">
 					<nz-form-explain *ngIf="form.get('name').dirty && form.get('name').errors">
 					<span>
 						姓名不能为空
@@ -69,7 +72,8 @@
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
 					<nz-select nzPlaceHolder='会员类型' formControlName="vipTypeId" id="vipTypeId">
-						<nz-option *ngFor="let item of ENUM_VipTypes" [nzLabel]="item.key" [nzValue]="item.value"></nz-option>
+						<nz-option *ngFor="let item of ENUM_VipTypes" [nzLabel]="item.key"
+						           [nzValue]="item.value"></nz-option>
 					</nz-select>
 					<nz-form-explain *ngIf="form.get('vipTypeId').dirty && form.get('vipTypeId').errors">
 					<span>
@@ -80,11 +84,11 @@
 			</nz-form-item>
 
 			<nz-form-item class='c-formSec'>
-				<nz-form-label [nzSm]="5"  nzFor="new">
+				<nz-form-label [nzSm]="5" nzFor="new">
 					生日
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
-					<input class=""  nz-input formControlName="birthDay" id="birthDay" placeholder="生日">
+					<input class="" nz-input formControlName="birthDay" id="birthDay" placeholder="生日">
 					<nz-form-explain *ngIf="form.get('birthDay').dirty && form.get('birthDay').errors">
 					<span>
 						生日格式与5-12相同
@@ -94,16 +98,16 @@
 			</nz-form-item>
 
 			<nz-form-item class='c-formSec'>
-				<nz-form-label [nzSm]="5"  nzFor="new">
+				<nz-form-label [nzSm]="5" nzFor="new">
 					备注
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
-					<input class=""  nz-input formControlName="remark" id="remark" placeholder="备注">
+					<input class="" nz-input formControlName="remark" id="remark" placeholder="备注">
 				</nz-form-control>
 			</nz-form-item>
 
 			<nz-form-item class='c-formSec'>
-				<nz-form-label [nzSm]="5"  nzFor="new">
+				<nz-form-label [nzSm]="5" nzFor="new">
 					状态原因
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
@@ -125,7 +129,7 @@
 					手机: <span> {{ userInfo.tel  | nullPipe }}</span>
 				</div>
 				<div class="vipInfo">
-					加入时间: <span> {{ userInfo.joinTime  | datePie:'y-m-d' }}</span>
+					折扣率: <span> {{ !userInfo.typeInfo? '无' : userInfo.typeInfo.discount  | discount }}</span>
 				</div>
 			</div>
 			<div class="c-flex-row-start">
@@ -146,23 +150,51 @@
 		<div class="vip-records">
 			<nz-tabset [(nzSelectedIndex)]="tabIndex" (nzSelectChange)="tabChange()">
 				<nz-tab nzTitle="消费">
-<!--					<div class="c-flex-row-center c-full-container">-->
-<!--						<img src="../../../../assets/img/empty.svg" alt="">-->
-<!--					</div>-->
-					<div class="c-full-container record-tab">
-						<nz-tabset nzTabPosition="left">
-							<nz-tab [nzTitle]='titleTemplate'>
-								<ng-template #titleTemplate>
-									<div>
-										<div></div>
-										<div>2012-12-12</div>
+					<!--					<div class="c-flex-row-center c-full-container">-->
+					<!--						<img src="../../../../assets/img/empty.svg" alt="">-->
+					<!--					</div>-->
+					<div class="c-full-container record-container c-flex-row-start">
+						<div class="record-container-left scrollContainer">
+							<div *ngFor=" let item of recordData.consume ">
+								<div
+									class="item-content"
+									[ngClass]="{'item-select': item === orderSelect}"
+									(click)="selectOrder( item ) "
+								>
+									<div class="c-flex-row-space">
+										<div>
+											{{ item.roomName }}
+										</div>
+										<div>
+											{{ item.totalMoney | cusCurrency }}
+										</div>
 									</div>
-								</ng-template>
-								<div>
-
+									<div>
+										{{ item.joinTime | datePie }}
+									</div>
 								</div>
-							</nz-tab>
-						</nz-tabset>
+							</div>
+						</div>
+						<div class="record-container-right scrollContainer">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>消费类别</th>
+										<th>项目明细</th>
+										<th>实收金额</th>
+										<th>应收金额</th>
+									</tr>
+								</thead>
+								<tbody>
+								<tr *ngFor=" let item of orderDetailList">
+									<td>{{ item.type }}</td>
+									<td>{{ item.remark }}</td>
+									<td>{{ item.shouldMoney | cusCurrency }}</td>
+									<td>{{ item.allMoney | cusCurrency }}</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</nz-tab>
 				<nz-tab nzTitle="充值">

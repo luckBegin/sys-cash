@@ -58,36 +58,42 @@ export class VipInfoComponent {
 		this.form.reset() ;
 		this.userInfo = {} ;
 		this.form.patchValue({ status: 0 }) ;
+		this.recordData = { consume: [] , deposit: [] , integral: [] } ;
+		this.orderSelect = {} ;
+		this.orderDetailList =  [] ;
 	}
 	
 	public vipQueryList!: any[] ;
-	
 	public userInfo: any = {} ;
-	
 	private query(type: string): void {
+		this.recordData = { consume: [] , deposit: [] , integral: [] } ;
+		this.orderSelect = {} ;
+		this.orderDetailList =  [] ;
+		
 		const para = {};
 		para[type] = this.form.value[type];
+		
 		this.service.vipInfo(para)
-		.pipe(map((res: RESPONSE) => res.data))
-		.subscribe((data: any[]) => {
-			if (data.length === 0) {
-				this.msg.warn('所查询的用户不存在');
-				return ;
-			}
-			
-			if ( data.length === 1 ) {
-				this.msg.success('查询成功') ;
-				// data[0].sex = data[0].sex.toString() ;
-				// data[0].vipTypeId = data[0].vipTypeId.toString() ;
-				this.setUserInfo( data[0] ) ;
-				return ;
-			}
-			
-			if ( data.length > 1 ) {
-				this.selectUserModal = true ;
-				this.selectUsers = data ;
-			}
-		});
+			.pipe(map((res: RESPONSE) => res.data))
+			.subscribe((data: any[]) => {
+				if (data.length === 0) {
+					this.msg.warn('所查询的用户不存在');
+					return ;
+				}
+				
+				if ( data.length === 1 ) {
+					this.msg.success('查询成功') ;
+					// data[0].sex = data[0].sex.toString() ;
+					// data[0].vipTypeId = data[0].vipTypeId.toString() ;
+					this.setUserInfo( data[0] ) ;
+					return ;
+				}
+				
+				if ( data.length > 1 ) {
+					this.selectUserModal = true ;
+					this.selectUsers = data ;
+				}
+			});
 	}
 	
 	public ENUM_VipTypes!: ENUM[] ;
@@ -159,7 +165,6 @@ export class VipInfoComponent {
 	public freezeOrRecover($event: MouseEvent , type: string): void {
 		let serviceEvent$!: ( pata?: any) => Observable< RESPONSE >;
 		const value  = this.form.value ;
-		
 		if ( !value.reason ) {
 			this.msg.warn('请输入状态原因') ;
 			return ;
@@ -195,13 +200,18 @@ export class VipInfoComponent {
 	}
 	
 	recordData = { consume: [] , deposit: [] , integral: [] } ;
+	
 	@Strategy({
 		0($event: MouseEvent) {
 			const _this = (this as VipInfoComponent) ;
 			const vipId = _this.form.value.id ;
 			_this.roomSer.getAllVipOrders({vipId})
 				.subscribe( ( res: RESPONSE ) => {
-					_this.recordData.consume = res.data ;
+					if ( res.data.length > 0 ) {
+						_this.recordData.consume = res.data ;
+						_this.orderSelect = res.data[0] ;
+						_this.orderDetail() ;
+					}
 				});
 		},
 	})
@@ -209,6 +219,23 @@ export class VipInfoComponent {
 		return this.tabIndex ;
 	}
 	
+	 public orderSelect: any = {} ;
+	
+	 public orderDetailList: any[] = [] ;
+	
+	 public orderDetail(): void {
+		const orderId = this.orderSelect.id ;
+		this.roomSer.roomOrderItemList( { orderId })
+			.subscribe( ( res: RESPONSE ) => {
+				this.orderDetailList = this.orderDetailList.concat( res.data.room , res.data.market ) ;
+			});
+	}
+	
+	public selectOrder($event: any ): void {
+	 	this.orderSelect = $event ;
+	 	this.orderDetailList = [] ;
+	 	this.orderDetail() ;
+	}
 }
 
 const birthDayValidation = ( control: FormControl ): any => {
