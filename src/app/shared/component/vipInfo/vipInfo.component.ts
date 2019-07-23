@@ -112,6 +112,9 @@ export class VipInfoComponent {
 			status: 0 ,
 		}) ;
 		this.userInfo = {} ;
+		this.recordData = { consume: [] , deposit: [] , integral: [] } ;
+		this.orderSelect = {} ;
+		this.orderDetailList =  [] ;
 	}
 	
 	private create($event: MouseEvent): void {
