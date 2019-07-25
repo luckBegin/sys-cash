@@ -129,7 +129,7 @@
 					手机: <span> {{ userInfo.tel  | nullPipe }}</span>
 				</div>
 				<div class="vipInfo">
-					折扣率: <span> {{ !userInfo.typeInfo? '无' : userInfo.typeInfo.discount  | discount }}</span>
+					折扣率: <span> {{ !userInfo.typeInfo ? '无' : userInfo.typeInfo.discount  | discount }}</span>
 				</div>
 			</div>
 			<div class="c-flex-row-start">
@@ -178,12 +178,12 @@
 						<div class="record-container-right scrollContainer">
 							<table class="table">
 								<thead>
-									<tr>
-										<th>消费类别</th>
-										<th>项目明细</th>
-										<th>实收金额</th>
-										<th>应收金额</th>
-									</tr>
+								<tr>
+									<th>消费类别</th>
+									<th>项目明细</th>
+									<th>实收金额</th>
+									<th>应收金额</th>
+								</tr>
 								</thead>
 								<tbody>
 								<tr *ngFor=" let item of orderDetailList">
@@ -246,7 +246,16 @@
 	>
 		恢复
 	</button>
+	<button
+		nz-button class="operate-btn" style="background: rgb(19, 82, 68);"
+		*ngIf="userInfo.typeInfo"
+		(click)="this.bindCardModal = true"
+	>
+		绑卡
+	</button>
 </div>
+
+<!-- 多用户选择 -->
 <nz-modal
 	[(nzVisible)]="selectUserModal"
 	[nzTitle]="modalTitle"
@@ -268,7 +277,7 @@
 			<div class="user-select-item">
 				卡号:
 				<span>
-					{{ item.tel }}
+					{{ item.cardNumber }}
 				</span>
 			</div>
 			<div class="c-flex-row-space">
@@ -289,6 +298,69 @@
 	</ng-template>
 
 	<ng-template #modalFooter>
+		<span>Modal Footer: </span>
+	</ng-template>
+</nz-modal>
+
+<!-- 绑卡 -->
+<nz-modal
+	[(nzVisible)]="bindCardModal"
+	[nzTitle]="bindCardTitle"
+	[nzContent]="bindCardContent"
+	[nzFooter]="bindCardFooter"
+	class="selectUserModal"
+	(nzOnCancel)="bindCardModal = false"
+	nzWidth="700"
+>
+	<ng-template #bindCardTitle>
+		<span>绑定实体卡</span>
+	</ng-template>
+
+	<ng-template #bindCardContent>
+		<div style="padding: 20px 0">
+			<p class="tip-info">注意:实体卡绑定之后 , 原卡将被废弃</p>
+			<div class="c-flex-row-center bind-container">
+				<div>
+					<div class="bind-title">原卡</div>
+					<div class="bind-card bind-card-form">
+						<h2> {{ userInfo.cardNumber }}</h2>
+						<div>
+							<i nz-icon nzType="user" nzTheme="outline"></i>
+							<span> {{ userInfo.name }}</span>
+						</div>
+						<div>
+							<i nz-icon nzType="phone" nzTheme="outline"></i>
+							<span> {{ userInfo.tel }}</span>
+						</div>
+					</div>
+				</div>
+				<i nz-icon nzType="swap" nzTheme="outline" class="icon-swap"></i>
+				<div>
+					<div class="bind-title">绑定到的卡</div>
+					<div class="bind-card bind-card-to">
+						<h2> {{ bindCardForm.value.cardNumber | nullPipe }}</h2>
+						<div>
+							<i nz-icon nzType="user" nzTheme="outline"></i>
+							<span> {{ bindCardForm.value.name | nullPipe}}</span>
+						</div>
+						<div>
+							<i nz-icon nzType="phone" nzTheme="outline"></i>
+							<span> {{ bindCardForm.value.tel | nullPipe }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="c-flex-row-center">
+				<button
+					nz-button class="operate-btn" style="background: rgb(19, 82, 68);width: 200px"
+				>
+					绑定
+				</button>
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-template #bindCardFooter>
 		<span>Modal Footer: </span>
 	</ng-template>
 </nz-modal>

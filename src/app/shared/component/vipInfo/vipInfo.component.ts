@@ -93,6 +93,11 @@ export class VipInfoComponent {
 		
 		const para = {};
 		
+		if ( !this.form.value[type] ) {
+			this.msg.warn('请输入需要查询的内容') ;
+			return ;
+		}
+		
 		para[type] = this.form.value[type];
 		
 		this.service.vipInfo(para)
@@ -258,7 +263,7 @@ export class VipInfoComponent {
 		const orderId = this.orderSelect.id ;
 		this.roomSer.roomOrderItemList( { orderId })
 			.subscribe( ( res: RESPONSE ) => {
-				this.orderDetailList = this.orderDetailList.concat( res.data.room , res.data.market ) ;
+				this.orderDetailList = [].concat( res.data.room , res.data.market ) ;
 			});
 	}
 	
@@ -271,6 +276,15 @@ export class VipInfoComponent {
 	public modalCancel(): void {
 	 	this.WSEvent$.unsubscribe();
 	}
+	
+	bindCardModal: boolean = false ;
+	bindCardForm: FormGroup = this.fb.group({
+		rawId: [ null ] ,
+		id: [ null , [Validators.required ]] ,
+		name: [ null ] ,
+		tel: [ null ] ,
+		cardNumber: [ null ]
+	});
 }
 
 const birthDayValidation = ( control: FormControl ): any => {
