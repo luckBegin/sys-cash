@@ -1,6 +1,5 @@
 // export const HOST: string = 'http://api.jpgqs.cn';
 import {hostReportError} from 'rxjs/internal-compatibility';
-
 export const HOST: string = 'http://localhost:3002';
 const system = {
 	staff: HOST + '/system/staff',
@@ -44,4 +43,5 @@ const vip = {
 	info: HOST + '/vip/user' ,
 	type: HOST + '/vip/type/all' ,
 };
-export const API = {system, room, calc, utils, basic, weChat , vip };
+const WSUrl: string = 'ws://localhost:3333' ;
+export const API = {system, room, calc, utils, basic, weChat , vip  , WSUrl };

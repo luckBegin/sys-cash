@@ -1,14 +1,13 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MsgService, RoomService, SesssionStorageService} from '../../../service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {VipService} from '../../../service/vip/vip.service';
 import {ENUM, RESPONSE} from '../../../models';
-import {map} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import {AdaptorUtils, DateUtils} from '../../utils';
-import {ngIfAnimation} from '../../../router/router-animation';
-import {Observable} from 'rxjs';
-import {$RBRACE} from 'codelyzer/angular/styles/chars';
+import {Observable, Subscription} from 'rxjs';
 import {Strategy} from '../../../../decorators';
+import {WebsocketService , WsEvent} from '../../../service/websocket/websocket.service';
 
 @Component({
 	selector: 'common-vip-info',
@@ -21,7 +20,8 @@ export class VipInfoComponent {
 		private readonly ss: SesssionStorageService,
 		private readonly fb: FormBuilder,
 		private readonly service: VipService ,
-		private readonly roomSer: RoomService
+		private readonly roomSer: RoomService ,
+		private readonly WsSocketSer: WebsocketService
 	) {
 	}
 	
@@ -51,6 +51,8 @@ export class VipInfoComponent {
 	
 	public selectUsers: any[] = []  ;
 	
+	private WSEvent$!: Subscription ;
+	
 	public init(): void {
 		if ( !this.ENUM_VipTypes ) {
 			this.getType() ;
@@ -61,16 +63,36 @@ export class VipInfoComponent {
 		this.recordData = { consume: [] , deposit: [] , integral: [] } ;
 		this.orderSelect = {} ;
 		this.orderDetailList =  [] ;
+		
+		this.WSEvent$ = this.WsSocketSer.WSEvent$
+			.pipe(
+				filter( ( event: WsEvent) => event.event === 'vip') ,
+				map( (event: WsEvent ) => event.data )
+			)
+			.subscribe( data => {
+				if ( this.form.value.id !== data.vipId ) {
+					this.form.patchValue({ id: data.vipId }) ;
+					this.query('id') ;
+				}
+			});
 	}
 	
 	public vipQueryList!: any[] ;
+	
 	public userInfo: any = {} ;
+	
 	private query(type: string): void {
+		
 		this.recordData = { consume: [] , deposit: [] , integral: [] } ;
+		
 		this.orderSelect = {} ;
+		
 		this.orderDetailList =  [] ;
 		
+		this.userInfo = {} ;
+		
 		const para = {};
+		
 		para[type] = this.form.value[type];
 		
 		this.service.vipInfo(para)
@@ -78,6 +100,8 @@ export class VipInfoComponent {
 			.subscribe((data: any[]) => {
 				if (data.length === 0) {
 					this.msg.warn('所查询的用户不存在');
+					this.form.reset() ;
+					this.form.patchValue({ status: 0 }) ;
 					return ;
 				}
 				
@@ -95,7 +119,6 @@ export class VipInfoComponent {
 				}
 			});
 	}
-	
 	public ENUM_VipTypes!: ENUM[] ;
 	
 	private getType(): void {
@@ -243,6 +266,10 @@ export class VipInfoComponent {
 	 	this.orderSelect = $event ;
 	 	this.orderDetailList = [] ;
 	 	this.orderDetail() ;
+	}
+	
+	public modalCancel(): void {
+	 	this.WSEvent$.unsubscribe();
 	}
 }
 

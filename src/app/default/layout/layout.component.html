@@ -9,12 +9,21 @@
 			</div>
 
 			<div style="flex : 1" class="c-flex-row-end">
+
 				<div class="c-flex-row-end" style="margin-right: 100px">
-					<div class='operate-icon' (click)="vipInfo()">
+					<div class='operate-icon c-flex-row-start' >
+						<i nz-icon nzType="api" nzTheme="outline" nz-tooltip [nzTitle]="wsState.msg" ></i>
+						<div class="state-circle" [ngClass]="{'state-success':wsState.state,'state-error':!wsState.state}"></div>
+					</div>
+				</div>
+
+				<div class="c-flex-row-end" style="margin-right: 100px">
+					<div class='operate-icon ws-state-error' (click)="vipInfo()">
 						<i nz-icon nzType="team" nzTheme="outline"></i>
 						会员查询
 					</div>
 				</div>
+
 				<nz-dropdown nzPlacement="bottomRight">
 					<div class="alain-default__nav-item d-flex align-items-center px-sm" nz-dropdown>
 						<nz-avatar
@@ -33,6 +42,7 @@
 						</div>
 					</div>
 				</nz-dropdown>
+
 			</div>
 		</div>
 		<div class="router-container">
@@ -95,7 +105,7 @@
 	[nzTitle]="vipInfoModalTitle"
 	[nzContent]="vipInfoModalContent"
 	[nzFooter]="vipInfoModalFotter"
-	(nzOnCancel)="vipInfoModal = false"
+	(nzOnCancel)="modalCancel()"
 	class="common-modal vipInfoModal"
 	nzWidth="1000"
 	[nzStyle]="{top:'50px'}"

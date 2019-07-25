@@ -11,6 +11,7 @@ import {Service, Strategy} from '../../../../decorators';
 import {AdvanceComponent} from '../../../shared/component/cash/advanve/advance.component';
 import {CheckoutRoomComponent} from '../../../shared/component/casher/room/room.component';
 import {NzTabChangeEvent} from 'ng-zorro-antd';
+import {WebsocketService} from '../../../service/websocket/websocket.service';
 
 @Component({
 	selector: 'cash',
@@ -22,7 +23,8 @@ export class CashComponent implements OnInit, OnDestroy {
 	constructor(
 		private readonly service: RoomService,
 		private readonly msg: MsgService,
-		private readonly keyboardSer: KeyboardService
+		private readonly keyboardSer: KeyboardService ,
+		private readonly WsSocket: WebsocketService
 	) {
 	}
 	
