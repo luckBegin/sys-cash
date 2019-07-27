@@ -42,6 +42,7 @@ const weChat = {
 const vip = {
 	info: HOST + '/vip/user' ,
 	type: HOST + '/vip/type/all' ,
+	bindCard: HOST + '/vip/user/bindCard'
 };
 const WSUrl: string = 'ws://localhost:3333' ;
 export const API = {system, room, calc, utils, basic, weChat , vip  , WSUrl };

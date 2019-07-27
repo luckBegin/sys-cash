@@ -66,13 +66,18 @@ export class VipInfoComponent {
 		
 		this.WSEvent$ = this.WsSocketSer.WSEvent$
 			.pipe(
-				filter( ( event: WsEvent) => event.event === 'vip') ,
-				map( (event: WsEvent ) => event.data )
+				filter( ( event: WsEvent) => event.event === 'vip' || event.event === 'entityCard') ,
 			)
-			.subscribe( data => {
-				if ( this.form.value.id !== data.vipId ) {
+			.subscribe( (res: WsEvent) => {
+				const data = res.data ;
+				if ( res.event === 'vip' && this.form.value.id !== data.vipId ) {
 					this.form.patchValue({ id: data.vipId }) ;
 					this.query('id') ;
+				}
+				
+				if ( res.event === 'entityCard' && this.bindCardForm.value.entityCardNumber !== data.entityCardNumber ) {
+					this.bindCardForm.patchValue(({entityCardNumber: data.entityCardNumber })) ;
+					this.entityCardQuery();
 				}
 			});
 	}
@@ -278,13 +283,52 @@ export class VipInfoComponent {
 	}
 	
 	bindCardModal: boolean = false ;
-	bindCardForm: FormGroup = this.fb.group({
+	public bindCardForm: FormGroup = this.fb.group({
 		rawId: [ null ] ,
 		id: [ null , [Validators.required ]] ,
 		name: [ null ] ,
 		tel: [ null ] ,
+		entityCardNumber: [ null ] ,
 		cardNumber: [ null ]
 	});
+	public entityCardQuery(): void {
+		this.service.vipInfo({entityCardNumber: this.bindCardForm.value.entityCardNumber})
+		.subscribe( ( res: RESPONSE ) => {
+			this.bindCardForm.patchValue(res.data[0]) ;
+		});
+	}
+	
+	public bindCard($event: HTMLButtonElement): void {
+		if ( !this.form.valid ) {
+			this.msg.warn('请选读取原卡') ;
+			return ;
+		}
+		
+		if ( !this.bindCardForm.valid ) {
+			this.msg.warn('请先读取需要绑定到的卡') ;
+			return ;
+		}
+		// $event.disabled = true ;
+		this.service.bindCard({
+			oldVipId: this.form.value.id ,
+			newVipId: this.bindCardForm.value.id
+		})
+			.pipe(
+				filter( (res: RESPONSE ) => {
+					if ( !res.success ) {
+						this.msg.warn('绑定失败,原因' + res.message ) ;
+					}
+					$event.disabled = false ;
+					return res.success ;
+				}),
+				map( ( res: RESPONSE ) => res.data )
+			)
+			.subscribe( data => {
+				this.msg.success('绑定成功') ;
+				this.query('id') ;
+				this.bindCardModal = false ;
+			});
+	}
 }
 
 const birthDayValidation = ( control: FormControl ): any => {

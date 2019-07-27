@@ -29,7 +29,7 @@ export class VipService {
 	create(data?: any): Observable<RESPONSE> | any {
 	}
 	
-	@PUT(API. vip.info)
+	@PUT(API.vip.info)
 	update(data?: any): Observable<RESPONSE> | any {
 	}
 	
@@ -40,4 +40,9 @@ export class VipService {
 	@POST(API.vip.info + '/recover')
 	recover(data?: any): Observable<RESPONSE> | any {
 	}
+	
+	@POST(API.vip.bindCard)
+	bindCard(data?: any): Observable<RESPONSE> | any {
+	
+	};
 }

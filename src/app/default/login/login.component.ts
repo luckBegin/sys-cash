@@ -8,10 +8,12 @@ import {WeChatService} from '../../service/weChat/weChat.service';
 import {interval, Observable} from 'rxjs';
 import {CONFIG} from '../../CONFIG';
 import * as md5 from 'md5' ;
+import {ngIfAnimation} from '../../router/router-animation';
 @Component({
 	selector: 'login',
 	templateUrl: './login.component.html',
-	styleUrls: ['./login.component.less']
+	styleUrls: ['./login.component.less'] ,
+	animations: [ngIfAnimation]
 })
 export class LoginComponent implements OnInit {
 	constructor(
@@ -66,7 +68,7 @@ export class LoginComponent implements OnInit {
 			this.loginKey = res.data.key;
 			if (!this.wxLoginEvent$) {
 				this.wxLoginEvent$ = interval(2000)
-				.subscribe(res => {
+				.subscribe(sec => {
 					this.onWxLogin();
 				});
 			}

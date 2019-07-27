@@ -249,7 +249,7 @@
 	<button
 		nz-button class="operate-btn" style="background: rgb(19, 82, 68);"
 		*ngIf="userInfo.typeInfo"
-		(click)="this.bindCardModal = true"
+		(click)="this.bindCardModal = true;this.bindCardForm.reset()"
 	>
 		绑卡
 	</button>
@@ -352,7 +352,11 @@
 			</div>
 			<div class="c-flex-row-center">
 				<button
+					#button
 					nz-button class="operate-btn" style="background: rgb(19, 82, 68);width: 200px"
+					nz-popconfirm
+					nzTitle="确定绑定?"
+					(nzOnConfirm)="bindCard(button.el)"
 				>
 					绑定
 				</button>
