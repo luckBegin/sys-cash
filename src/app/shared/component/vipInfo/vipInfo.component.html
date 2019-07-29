@@ -71,7 +71,7 @@
 					类型
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
-					<nz-select nzPlaceHolder='会员类型' formControlName="vipTypeId" id="vipTypeId">
+					<nz-select [nzDisabled]="!!form.get('vipTypeId').value" nzPlaceHolder='会员类型' formControlName="vipTypeId" id="vipTypeId">
 						<nz-option *ngFor="let item of ENUM_VipTypes" [nzLabel]="item.key"
 						           [nzValue]="item.value"></nz-option>
 					</nz-select>
@@ -134,7 +134,7 @@
 			</div>
 			<div class="c-flex-row-start">
 				<div class="vipInfo">
-					余额: <span> {{ userInfo.integral  | nullPipe }}</span>
+					余额: <span> {{ userInfo.integral  | cusCurrency }}</span>
 				</div>
 				<div class="vipInfo">
 					积分: <span> {{ userInfo.balance | cusCurrency }}</span>
