@@ -301,6 +301,7 @@ export class CashComponent implements OnInit, OnDestroy {
 		this.checkoutShow = false;
 		this.modalShow = false;
 		this.msg.success('操作成功');
+		this.checkoutRoomComponent.cancel();
 		this.getList();
 	}
 	

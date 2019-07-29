@@ -4,6 +4,9 @@ import {CalcService, MsgService, PaymentService} from '../../../../service';
 import {AdaptorUtils, DateUtils} from '../../../utils';
 import {PaymentMethodComponent} from '../../paymentMethod/paymentMethod.component';
 import {Strategy} from '../../../../../decorators';
+import {WebsocketService, WsEvent} from '../../../../service/websocket/websocket.service';
+import {filter, map} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
 
 @Component({
 	selector: 'checkout-room',
@@ -14,7 +17,8 @@ export class CheckoutRoomComponent implements OnInit {
 	constructor(
 		private readonly msg: MsgService,
 		private readonly service: CalcService,
-		private readonly paymentSer: PaymentService
+		private readonly paymentSer: PaymentService ,
+		private readonly WsSocketSer: WebsocketService
 	) {
 	}
 	
@@ -23,16 +27,16 @@ export class CheckoutRoomComponent implements OnInit {
 	withTimePrice: boolean;
 	selectItem: any;
 	remark: string;
-	vipId: number = 5;
+	vipId: number = null;
 	userInfo: { vipInfo?: any, typeInfo?: any } = {};
 	@ViewChild('paymentMethodComponent')
 	paymentMethodComponent: PaymentMethodComponent;
+	private WsSocket!: Subscription ;
 	
 	private money: { allMoney: number, shouldMoney: number } = {
 		allMoney: 0,
 		shouldMoney: 0
 	};
-	
 	ngOnInit(): void {
 		this.getPaymentMethod();
 	}
@@ -43,6 +47,16 @@ export class CheckoutRoomComponent implements OnInit {
 		this.type = type;
 		this.withTimePrice = withTimePrice;
 		this.selectItem = selectItem;
+		
+		this.WsSocket = this.WsSocketSer.WSEvent$.pipe(
+			filter( (event: WsEvent ) => event.event === 'vip') ,
+			map( ( event: WsEvent ) => event.data )
+		)
+		.subscribe( data => {
+			this.vipId = data.vipId ;
+			this.calc() ;
+		});
+		
 		this.calc();
 	}
 	
@@ -129,26 +143,6 @@ export class CheckoutRoomComponent implements OnInit {
 		});
 	}
 	
-	// private getTimePrice(): void{
-	// 	this.timePrice = [] ;
-	// 	if( this.withTimePrice ) {
-	// 		this.service.timePrice( { endTime: this.selectItem.startTime , typeId: this.selectItem.id , type: 'time' } )
-	// 			.subscribe( ( res: RESPONSE ) => {
-	// 				if( res.success ) {
-	// 					this.timePrice = res.data.prices ;
-	// 					this.time = res.data.time ;
-	// 					this.calcMoney() ;
-	// 				} else {
-	// 					this.msg.error("获取数据失败 , " + res.message ) ;
-	// 				}
-	// 			} , err => {
-	// 				this.msg.error("计算金额失败 ,"  +  err ) ;
-	// 			});
-	// 	} else {
-	// 		this.calcMoney() ;
-	// 	}
-	// }
-	
 	private calcMoney(priceInfo?: any): void {
 		this.money.allMoney = 0;
 		this.money.shouldMoney = 0;
@@ -178,8 +172,7 @@ export class CheckoutRoomComponent implements OnInit {
 		});
 	}
 	
-	getMethodPayment(): any {
-		console.log( this ) ;
+	public getMethodPayment(): any {
 		return {
 			methods: this.paymentMethodComponent.getMoneyMethod(),
 			remark: this.remark,
@@ -189,5 +182,9 @@ export class CheckoutRoomComponent implements OnInit {
 			time: this.time,
 			timePrice: this.timePrice
 		};
+	}
+	public cancel(): void {
+		this.vipId = null ;
+		this.WsSocket.unsubscribe() ;
 	}
 }

@@ -178,7 +178,7 @@
 		[nzTitle]="checkoutModalTitle"
 		[nzContent]="checkoutModalContent"
 		[nzFooter]="checkoutModalFotter"
-		(nzOnCancel)="checkoutShow = false;keyEventEnabled = true"
+		(nzOnCancel)="checkoutShow = false;keyEventEnabled = true;checkoutRoomComponent.cancel()"
 		[nzWidth]="900"
 		*ngIf="selectRoomItem"
 		class="cashModal"
@@ -213,6 +213,6 @@
 		<button nz-button nzType="primary" class="status_1" *ngIf="selectRoomItem.status === 6"
 				(click)="checkOutWithTime($event)">结账
 		</button>
-		<button nz-button nzType="primary" (click)="checkoutShow = false;keyEventEnabled = true">关闭</button>
+		<button nz-button nzType="primary" (click)="checkoutShow = false;keyEventEnabled = true;checkoutRoomComponent.cancel()">关闭</button>
 	</ng-template>
 </nz-modal>
