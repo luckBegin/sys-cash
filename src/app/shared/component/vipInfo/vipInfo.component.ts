@@ -76,8 +76,14 @@ export class VipInfoComponent {
 				}
 				
 				if ( res.event === 'entityCard' && this.bindCardForm.value.entityCardNumber !== data.entityCardNumber ) {
-					this.bindCardForm.patchValue(({entityCardNumber: data.entityCardNumber })) ;
-					this.entityCardQuery();
+					if ( this.bindCardModal === true ) {
+						this.bindCardForm.patchValue(({entityCardNumber: data.entityCardNumber })) ;
+						this.entityCardQuery();
+					}  else {
+						this.form.patchValue({ entityCardNumber: data.entityCardNumber }) ;
+						this.query('entityCardNumber') ;
+					}
+					
 				}
 			});
 	}
@@ -306,6 +312,11 @@ export class VipInfoComponent {
 		
 		if ( !this.bindCardForm.valid ) {
 			this.msg.warn('请先读取需要绑定到的卡') ;
+			return ;
+		}
+		
+		if ( this.form.value.cardNumber === this.bindCardForm.value.cardNumber ) {
+			this.msg.warn('相同卡号的卡不可进行绑定') ;
 			return ;
 		}
 		// $event.disabled = true ;
