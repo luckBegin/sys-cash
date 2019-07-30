@@ -75,7 +75,7 @@ export class VipInfoComponent {
 					this.query('id') ;
 				}
 				
-				if ( res.event === 'entityCard' && this.bindCardForm.value.entityCardNumber !== data.entityCardNumber ) {
+				if ( res.event === 'entityCard' && this.bindCardForm.value.entityCardNumber !== data.entityCardNumber.toString() ) {
 					if ( this.bindCardModal === true ) {
 						this.bindCardForm.patchValue(({entityCardNumber: data.entityCardNumber })) ;
 						this.entityCardQuery();
@@ -300,7 +300,12 @@ export class VipInfoComponent {
 	public entityCardQuery(): void {
 		this.service.vipInfo({entityCardNumber: this.bindCardForm.value.entityCardNumber})
 		.subscribe( ( res: RESPONSE ) => {
-			this.bindCardForm.patchValue(res.data[0]) ;
+			if ( res.data && res.data.length > 0) {
+				this.bindCardForm.patchValue(res.data[0]) ;
+			} else {
+				this.msg.error('未查询到任何会员信息') ;
+				this.bindCardForm.reset( ) ;
+			}
 		});
 	}
 	
