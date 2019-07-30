@@ -45,8 +45,10 @@ export class LoginComponent implements OnInit {
 			THIS.msg.warn('请输入账号和密码');
 			return false;
 		} else {
-			THIS.form.value.password = md5(THIS.form.value.password) ;
-			return THIS.form.value;
+			return  {
+				username: THIS.form.value.username ,
+				password: md5(THIS.form.value.password)
+			};
 		}
 	})
 	login($event: MouseEvent, res?: RESPONSE): void {

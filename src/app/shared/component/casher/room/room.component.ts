@@ -160,9 +160,7 @@ export class CheckoutRoomComponent implements OnInit {
 			});
 		}
 	}
-	
 	private methods: ENUM[] = [];
-	
 	private getPaymentMethod(): void {
 		this.paymentSer.getMethod({isCheckout: 1})
 		.subscribe((res: RESPONSE) => {
