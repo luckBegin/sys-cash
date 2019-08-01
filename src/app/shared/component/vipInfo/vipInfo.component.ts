@@ -261,6 +261,8 @@ export class VipInfoComponent {
 					}
 				});
 		},
+		1() {  },
+		2() { ( this as VipInfoComponent).integralRecord(); }
 	})
 	public tabChange( ): number {
 		return this.tabIndex ;
@@ -309,14 +311,14 @@ export class VipInfoComponent {
 		});
 	}
 	
-	public bindCard($event: HTMLButtonElement): void {
+	public bindCard($event: any | HTMLButtonElement ): void {
 		if ( !this.form.valid ) {
 			this.msg.warn('请选读取原卡') ;
 			return ;
 		}
 		
 		if ( !this.bindCardForm.valid ) {
-			this.msg.warn('请先读取需要绑定到的卡') ;
+			this.msg.warn('请先读取新卡') ;
 			return ;
 		}
 		
@@ -332,7 +334,7 @@ export class VipInfoComponent {
 			.pipe(
 				filter( (res: RESPONSE ) => {
 					if ( !res.success ) {
-						this.msg.warn('绑定失败,原因' + res.message ) ;
+						this.msg.warn('操作失败,原因' + res.message ) ;
 					}
 					$event.disabled = false ;
 					return res.success ;
@@ -340,9 +342,32 @@ export class VipInfoComponent {
 				map( ( res: RESPONSE ) => res.data )
 			)
 			.subscribe( data => {
-				this.msg.success('绑定成功') ;
+				this.msg.success('操作成功') ;
 				this.query('id') ;
 				this.bindCardModal = false ;
+			});
+	}
+	
+	private integralRecord(): void {
+		const vipId = this.form.value.id ;
+		this.service.integral({ vipId })
+			.pipe( map( ( res: RESPONSE) => res.data ) )
+			.subscribe( ( data: any[] ) => {
+				const arr: any[] = [] ;
+				data.forEach( item => {
+					const itemData = item.reason.split('|') ;
+					console.log( itemData )
+					arr.push({
+						operate: itemData[0] ,
+						integral: itemData[1] ,
+						raw: itemData[2] ,
+						createTime: itemData[3] ,
+						money: itemData[4] ,
+						cardNumber: itemData[7] ,
+						source: itemData[8]
+					}) ;
+				});
+				this.recordData.integral = arr ;
 			});
 	}
 }

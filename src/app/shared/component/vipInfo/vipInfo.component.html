@@ -71,7 +71,7 @@
 					类型
 				</nz-form-label>
 				<nz-form-control [nzSm]="18" [nzOffset]='1'>
-					<nz-select [nzDisabled]="!!form.get('vipTypeId').value" nzPlaceHolder='会员类型' formControlName="vipTypeId" id="vipTypeId">
+					<nz-select [nzDisabled]="!!form.get('id').value" nzPlaceHolder='会员类型' formControlName="vipTypeId" id="vipTypeId">
 						<nz-option *ngFor="let item of ENUM_VipTypes" [nzLabel]="item.key"
 						           [nzValue]="item.value"></nz-option>
 					</nz-select>
@@ -137,7 +137,7 @@
 					余额: <span> {{ userInfo.integral  | cusCurrency }}</span>
 				</div>
 				<div class="vipInfo">
-					积分: <span> {{ userInfo.balance | cusCurrency }}</span>
+					积分: <span> {{ userInfo.balance }}</span>
 				</div>
 				<div class="vipInfo">
 					房费余额: <span> {{ userInfo.balanceForRoom | cusCurrency }}</span>
@@ -150,10 +150,10 @@
 		<div class="vip-records">
 			<nz-tabset [(nzSelectedIndex)]="tabIndex" (nzSelectChange)="tabChange()">
 				<nz-tab nzTitle="消费">
-					<!--					<div class="c-flex-row-center c-full-container">-->
-					<!--						<img src="../../../../assets/img/empty.svg" alt="">-->
-					<!--					</div>-->
-					<div class="c-full-container record-container c-flex-row-start">
+					<div class="c-flex-row-center c-full-container" *ngIf="recordData.consume.length <= 0">
+						<img src="../../../../assets/img/empty.svg" alt="">
+					</div>
+					<div class="c-full-container record-container c-flex-row-start" *ngIf="recordData.consume.length > 0">
 						<div class="record-container-left scrollContainer">
 							<div *ngFor=" let item of recordData.consume ">
 								<div
@@ -203,8 +203,33 @@
 					</div>
 				</nz-tab>
 				<nz-tab nzTitle="积分">
-					<div class="c-flex-row-center c-full-container">
+					<div class="c-flex-row-center c-full-container" *ngIf="recordData.integral.length <= 0 ">
 						<img src="../../../../assets/img/empty.svg" alt="">
+					</div>
+					<div class="tabContainer scrollContainer" *ngIf="recordData.integral.length > 0 ">
+						<table class="table">
+							<thead>
+							<tr>
+								<th>积分变动类型</th>
+								<th>变动前积分</th>
+								<th>增加积分</th>
+								<th>消费金额</th>
+								<th>卡号</th>
+								<th>来源</th>
+								<th>时间</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor=" let item of recordData.integral">
+								<td>{{ item.operate }}</td>
+								<td>{{ item.raw }}</td>
+								<td>{{ item.integral }}</td>
+								<td>{{ item.money | cusCurrency }}</td>
+								<td>{{ item.source }}</td>
+								<td>{{ item.createTime | datePie:'y-m-d h:i' }}</td>
+							</tr>
+							</tbody>
+						</table>
 					</div>
 				</nz-tab>
 			</nz-tabset>
@@ -251,7 +276,7 @@
 		*ngIf="userInfo.typeInfo"
 		(click)="this.bindCardModal = true;this.bindCardForm.reset()"
 	>
-		绑卡
+		绑卡/补卡
 	</button>
 </div>
 
@@ -313,12 +338,12 @@
 	nzWidth="700"
 >
 	<ng-template #bindCardTitle>
-		<span>绑定实体卡</span>
+		<span>绑卡 / 补卡</span>
 	</ng-template>
 
 	<ng-template #bindCardContent>
 		<div style="padding: 20px 0">
-			<p class="tip-info">注意:实体卡绑定之后 , 原卡将被废弃</p>
+			<p class="tip-info">注意:新卡绑定之后 , 原卡将被废弃</p>
 			<div class="c-flex-row-center bind-container">
 				<div>
 					<div class="bind-title">原卡</div>
@@ -336,7 +361,7 @@
 				</div>
 				<i nz-icon nzType="swap" nzTheme="outline" class="icon-swap"></i>
 				<div>
-					<div class="bind-title">绑定到的卡</div>
+					<div class="bind-title">新卡</div>
 					<div class="bind-card bind-card-to">
 						<h2> {{ bindCardForm.value.cardNumber | nullPipe }}</h2>
 						<div>
@@ -352,7 +377,7 @@
 			</div>
 			<div class="c-flex-row-center">
 				<button
-					#button
+                    #button
 					nz-button class="operate-btn" style="background: rgb(19, 82, 68);width: 200px"
 					nz-popconfirm
 					nzTitle="确定绑定?"

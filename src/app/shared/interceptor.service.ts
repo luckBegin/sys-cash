@@ -16,8 +16,8 @@ export class HttpIntercept implements HttpInterceptor {
 	}
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): any {
-		let headers = {};
-		let obj = {
+		const headers = {};
+		const obj = {
 			// 'withCredentials': true ,
 			setParams: {},
 		};
@@ -27,8 +27,8 @@ export class HttpIntercept implements HttpInterceptor {
 			headers['jwt-token'] = token;
 		}
 		
-		const loginInfo = this.sgo.get("loginInfo") ;
-		if( loginInfo ) {
+		const loginInfo = this.sgo.get('loginInfo') ;
+		if ( loginInfo ) {
 			headers['jwt-user-id'] = loginInfo.userInfo.id.toString() ;
 		}
 		
@@ -42,8 +42,9 @@ export class HttpIntercept implements HttpInterceptor {
 			}
 
 			if ( req.method === 'POST' ) {
-				if(req.body && !req.body['shopId'])
+				if (req.body && !req.body['shopId']) {
 					req.body['shopId'] = shopId;
+				}
 			}
 		}
 
@@ -83,5 +84,5 @@ export class HttpIntercept implements HttpInterceptor {
 					return throwError(err);
 				}),
 			);
-	};
+	}
 }

@@ -43,6 +43,9 @@ export class VipService {
 	
 	@POST(API.vip.bindCard)
 	bindCard(data?: any): Observable<RESPONSE> | any {
+	}
 	
-	};
+	@GET( API.vip.integral)
+	integral( para?: any): Observable< RESPONSE > | any {
+	}
 }
