@@ -5,7 +5,7 @@ import {AdaptorUtils, DateUtils} from '../../../utils';
 import {PaymentMethodComponent} from '../../paymentMethod/paymentMethod.component';
 import {Strategy} from '../../../../../decorators';
 import {WebsocketService, WsEvent} from '../../../../service/websocket/websocket.service';
-import {filter, map} from 'rxjs/operators';
+import {filter} from 'rxjs/operators';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -23,14 +23,24 @@ export class CheckoutRoomComponent implements OnInit {
 	}
 	
 	type: number;
+	
 	time: any;
+	
 	withTimePrice: boolean;
+	
 	selectItem: any;
+	
 	remark: string;
+	
 	vipId: number = null;
+	
 	userInfo: { vipInfo?: any, typeInfo?: any } = {};
+	
+	entityCard: string = '' ;
+	
 	@ViewChild('paymentMethodComponent')
 	paymentMethodComponent: PaymentMethodComponent;
+	
 	private WsSocket!: Subscription ;
 	
 	private money: { allMoney: number, shouldMoney: number } = {
@@ -49,11 +59,19 @@ export class CheckoutRoomComponent implements OnInit {
 		this.selectItem = selectItem;
 		
 		this.WsSocket = this.WsSocketSer.WSEvent$.pipe(
-			filter( (event: WsEvent ) => event.event === 'vip') ,
-			map( ( event: WsEvent ) => event.data )
+			filter( (event: WsEvent ) => event.event === 'vip' || event.event === 'entityCard') ,
 		)
-		.subscribe( data => {
-			this.vipId = data.vipId ;
+		.subscribe( ( event: WsEvent ) => {
+			if ( event.event === 'vip') {
+				this.vipId = event.data.vipId ;
+				this.entityCard = null ;
+			}
+			
+			if ( event.event === 'entityCard' ) {
+				this.entityCard = event.data.entityCardNumber ;
+				this.vipId = null;
+			}
+			
 			this.calc() ;
 		});
 		
@@ -97,7 +115,8 @@ export class CheckoutRoomComponent implements OnInit {
 			priceId: this.selectItem.price.id,
 			vipId: this.vipId,
 			withTimePrice: this.withTimePrice,
-			typeId: this.selectItem.price.roomTypeId
+			typeId: this.selectItem.price.roomTypeId ,
+			entityCard:  this.entityCard
 		})
 		.subscribe((res: RESPONSE) => {
 			this.timePrice = res.data.timePrice.prices;
@@ -132,7 +151,7 @@ export class CheckoutRoomComponent implements OnInit {
 			typeId: this.selectItem.typeId,
 			startTime: DateUtils.format(this.selectItem.orderInfo.joinTime, 'hi'),
 			type: 'time',
-			vipId: this.vipId
+			vipId: this.vipId ,
 		})
 		.subscribe((res: RESPONSE) => {
 			this.timePrice = res.data.prices;
