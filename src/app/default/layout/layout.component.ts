@@ -6,7 +6,6 @@ import {MsgService, StaffService} from '../../service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as md5 from 'md5' ;
 import {RESPONSE} from '../../models';
-import {VipInfoComponent} from '../../shared/component/vipInfo/vipInfo.component';
 import {Subscription} from 'rxjs';
 import {WebsocketService, WsEvent} from '../../service/websocket/websocket.service';
 import {filter, map} from 'rxjs/operators';
@@ -92,18 +91,5 @@ export class LayoutComponent implements OnInit {
 			this.changePassShow = false;
 			this.logout();
 		});
-	}
-	
-	vipInfoModal: boolean = false;
-	@ViewChild('vipInfoComponent') vipInfoComponent: VipInfoComponent;
-	
-	public vipInfo(): void {
-		this.vipInfoComponent.init();
-		this.vipInfoModal = true;
-	}
-	
-	public modalCancel(): void {
-		this.vipInfoModal = false;
-		this.vipInfoComponent.modalCancel();
 	}
 }

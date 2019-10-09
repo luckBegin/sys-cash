@@ -98,26 +98,3 @@
 		<button nz-button (click)="changePassShow = false">关闭</button>
 	</ng-template>
 </nz-modal>
-
-
-<nz-modal
-	[(nzVisible)]="vipInfoModal"
-	[nzTitle]="vipInfoModalTitle"
-	[nzContent]="vipInfoModalContent"
-	[nzFooter]="vipInfoModalFotter"
-	(nzOnCancel)="modalCancel()"
-	class="common-modal vipInfoModal"
-	nzWidth="1000"
-	[nzStyle]="{top:'50px'}"
->
-	<ng-template #vipInfoModalTitle>
-		会员信息查看
-	</ng-template>
-
-	<ng-template #vipInfoModalContent>
-		<common-vip-info #vipInfoComponent></common-vip-info>
-	</ng-template>
-
-	<ng-template #vipInfoModalFotter>
-	</ng-template>
-</nz-modal>

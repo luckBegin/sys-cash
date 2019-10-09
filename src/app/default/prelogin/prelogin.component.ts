@@ -29,7 +29,6 @@ export class PreloginComponent implements OnInit {
 
 		const menu = loginInfo.menuInfo[1].children as any[];
 		const shopInfo = loginInfo.shopInfo as any[];
-
 		menu.forEach((item: any) => {
 			this.ENUM_Sys.push({
 				key: item.name,
